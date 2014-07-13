@@ -7,7 +7,9 @@ Open source platform을 기반으로 plun software와 연동되어 사물인터�
 지원 계획은 아래와 같으며 필요에따라 호환 하드웨어로 대체될 수 있습니다.
 
 (1) ARM mbed
+
 (2) TI Launchpad
-  * MSP430F5529 Launchpad + CC3000 WiFi module
-  * TM4C123GH6PM Launchpad + CC3000 WiFi module
+  -MSP430F5529 Launchpad + CC3000 WiFi module
+  -TM4C123GH6PM Launchpad + CC3000 WiFi module
+  
 (3) Arduino
