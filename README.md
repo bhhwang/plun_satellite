@@ -9,7 +9,7 @@ Open source platform을 기반으로 plun software와 연동되어 사물인터�
 (1) ARM mbed
 
 (2) TI Launchpad
-  -MSP430F5529 Launchpad + CC3000 WiFi module
-  -TM4C123GH6PM Launchpad + CC3000 WiFi module
+  [1] MSP430F5529 Launchpad + CC3000 WiFi module
+  [2] TM4C123GH6PM Launchpad + CC3000 WiFi module
   
 (3) Arduino
