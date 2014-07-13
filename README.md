@@ -18,7 +18,7 @@ Open source platform을 기반으로 plun software와 연동되어 사물인터�
     (2) 설치
     
     * [Stellaris ICDI Driver](http://www.ti.com/tool/stellaris_icdi_drivers)
-    * [TivaWare for C Series and Code Composer Studio for the Tiva C Series TM4C123G LaunchPad](http://www.ti.com/tool/sw-ek-tm4c123gxl)
+    * [Code Composer Studio for the Tiva C Series TM4C123G LaunchPad](http://www.ti.com/tool/sw-ek-tm4c123gxl)
     * [TivaWare for C Series Software (Complete) 151M ](http://software-dl.ti.com/tiva-c/SW-TM4C/latest/index_FDS.html)
   
   
