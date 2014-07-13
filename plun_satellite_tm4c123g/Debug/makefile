@@ -10,7 +10,7 @@ ORDERED_OBJS += \
 $(GEN_CMDS__FLAG) \
 "./tm4c123gh6pm_startup_ccs.obj" \
 "./main.obj" \
-"../driverlib.lib" \
+"C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/ccs/Debug/driverlib.lib" \
 "../tm4c123gh6pm.cmd" \
 -l"libc.a" \
 
