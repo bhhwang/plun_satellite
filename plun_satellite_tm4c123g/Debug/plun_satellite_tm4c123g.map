@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v5.1.5                      
 ******************************************************************************
->> Linked Mon Jul 14 01:47:29 2014
+>> Linked Mon Jul 14 11:55:46 2014
 
 OUTPUT FILE NAME:   <plun_satellite_tm4c123g.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: 0000088d
@@ -118,19 +118,23 @@ address    name
 00000a5f   GPIOPinWrite
 00000771   IntEnable
 00000a47   IntMasterEnable
+UNDEFED    IntSpiGPIOHandler
 00000a3b   ResetISR
 UNDEFED    SHT$$INIT_ARRAY$$Base
 UNDEFED    SHT$$INIT_ARRAY$$Limit
+UNDEFED    SpiIntHandler
 0000039d   SysCtlClockGet
 000004b5   SysCtlClockSet
 00000a65   SysCtlDelay
 0000095d   SysCtlPeripheralEnable
+UNDEFED    SysTickHandler
 000005a5   Timer0IntHandler
 00000831   TimerConfigure
 00000a13   TimerEnable
 00000a71   TimerIntClear
 00000a51   TimerIntEnable
 00000a01   TimerLoadSet
+UNDEFED    UARTStdioIntHandler
 20000200   __STACK_END
 00000200   __STACK_SIZE
 20000200   __STACK_TOP
@@ -163,7 +167,7 @@ ffffffff   binit
 000008d5   copy_in
 00000925   exit
 00000000   g_pfnVectors
-00000623   main
+00000625   main
 20000210   main_func_sp
 00000641   memcpy
 000005d1   setup
@@ -182,7 +186,7 @@ address    name
 000004b5   SysCtlClockSet
 000005a5   Timer0IntHandler
 000005d1   setup
-00000623   main
+00000625   main
 00000641   __aeabi_memcpy
 00000641   __aeabi_memcpy4
 00000641   __aeabi_memcpy8
@@ -229,7 +233,11 @@ address    name
 ffffffff   __binit__
 ffffffff   __c_args__
 ffffffff   binit
+UNDEFED    IntSpiGPIOHandler
 UNDEFED    SHT$$INIT_ARRAY$$Base
 UNDEFED    SHT$$INIT_ARRAY$$Limit
+UNDEFED    SpiIntHandler
+UNDEFED    SysTickHandler
+UNDEFED    UARTStdioIntHandler
 
-[58 symbols]
+[62 symbols]
