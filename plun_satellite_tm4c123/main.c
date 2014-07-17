@@ -9,24 +9,16 @@
  * 		  We hope to re-configure all code for fast implementation, but all functions will not support.
  */
 
-#include "include/system.h"
-#include "include/uart.h"
-#include "include/wifi.h"
+#include "include/plun_satellite.h"
 
 enum { IDLE=0 };
 static uint8_t cur_state = IDLE;
 
-char ssid[] = "nsynapse";
-char pass[] = "ghkdqudgns";
-
 void setup()
 {
-	init_clock();
+	init_satellite();
 
-	serial_begin(0, 115200);
-	wifi_begin(ssid, pass);
-
-	UARTprintf("test");
+	UARTprintf("12345678901234567890");
 }
 
 void loop()

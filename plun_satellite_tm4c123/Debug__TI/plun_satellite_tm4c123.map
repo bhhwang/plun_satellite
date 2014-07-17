@@ -1,33 +1,33 @@
 ******************************************************************************
                   TI ARM Linker PC v5.1.5                      
 ******************************************************************************
->> Linked Thu Jul 17 18:57:03 2014
+>> Linked Fri Jul 18 02:12:53 2014
 
 OUTPUT FILE NAME:   <plun_satellite_tm4c123.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 00000de5
+ENTRY POINT SYMBOL: "_c_int00"  address: 0000530d
 
 
 MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  FLASH                 00000000   00040000  00000fe6  0003f01a  R  X
-  SRAM                  20000000   00008000  000006c9  00007937  RW X
+  FLASH                 00000000   00040000  00005911  0003a6ef  R  X
+  SRAM                  20000000   00008000  000011bc  00006e44  RW X
 
 
 SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-00000000    00000000    00000fe8   00000fe8    r-x
+00000000    00000000    00005918   00005918    r-x
   00000000    00000000    0000026c   0000026c    r-- .intvecs
-  0000026c    0000026c    00000cf0   00000cf0    r-x .text
-  00000f5c    00000f5c    0000003a   0000003a    r-- .const
-  00000f98    00000f98    00000050   00000050    r-- .cinit
-20000000    20000000    000006cc   00000000    rw-
-  20000000    20000000    00000485   00000000    rw- .bss
-  20000488    20000488    00000200   00000000    rw- .stack
-  20000688    20000688    00000044   00000000    rw- .data
+  0000026c    0000026c    000052c0   000052c0    r-x .text
+  0000552c    0000552c    000003a5   000003a5    r-- .const
+  000058d8    000058d8    00000040   00000040    r-- .cinit
+20000000    20000000    000011bc   00000000    rw-
+  20000000    20000000    00000f88   00000000    rw- .bss
+  20000f88    20000f88    00000200   00000000    rw- .stack
+  20001188    20001188    00000034   00000000    rw- .data
 
 
 SECTION ALLOCATION MAP
@@ -41,68 +41,95 @@ section   page    origin      length       input sections
 .init_array 
 *          0    00000000    00000000     UNINITIALIZED
 
-.text      0    0000026c    00000cf0     
-                  0000026c    00000900     uartstdio.obj (.text)
-                  00000b6c    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.obj (.text)
-                  00000c08    00000094                                   : auto_init.obj (.text)
-                  00000c9c    00000078     uart.obj (.text)
-                  00000d14    00000070     main.obj (.text)
-                  00000d84    0000005e     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_rle.obj (.text)
-                  00000de2    00000002     --HOLE-- [fill = 0]
-                  00000de4    00000048                                   : boot.obj (.text)
-                  00000e2c    00000044                                   : cpy_tbl.obj (.text)
-                  00000e70    00000044                                   : exit.obj (.text)
-                  00000eb4    00000042                                   : u_divt2.obj (.text)
-                  00000ef6    00000002     --HOLE-- [fill = 0]
-                  00000ef8    00000018                                   : args_main.obj (.text)
-                  00000f10    00000014                                   : _lock.obj (.text)
-                  00000f24    00000012                                   : copy_zero_init.obj (.text:decompress:ZI)
-                  00000f36    0000000e                                   : copy_decompress_none.obj (.text:decompress:none)
-                  00000f44    0000000c     tm4c123gh6pm_startup_ccs.obj (.text)
-                  00000f50    00000006     driverlib.lib : uart.obj (.text:UARTClockSourceSet)
-                  00000f56    00000006     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24)
+.text      0    0000026c    000052c0     
+                  0000026c    00004574     cc3000lib.obj (.text)
+                  000047e0    000004dc     uartstdio.obj (.text)
+                  00004cbc    000001b8     main.obj (.text)
+                  00004e74    00000130     driverlib.lib : gpio.obj (.text:GPIOPadConfigSet)
+                  00004fa4    00000118                   : sysctl.obj (.text:SysCtlClockGet)
+                  000050bc    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.obj (.text)
+                  00005158    00000094                                   : auto_init.obj (.text)
+                  000051ec    00000078                                   : memset_t2.obj (.text)
+                  00005264    0000005e                                   : copy_decompress_rle.obj (.text)
+                  000052c2    00000002     --HOLE-- [fill = 0]
+                  000052c4    00000048     driverlib.lib : gpio.obj (.text:GPIOPinConfigure)
+                  0000530c    00000048     rtsv7M4_T_le_v4SPD16_eabi.lib : boot.obj (.text)
+                  00005354    00000044                                   : cpy_tbl.obj (.text)
+                  00005398    00000044                                   : exit.obj (.text)
+                  000053dc    00000042                                   : u_divt2.obj (.text)
+                  0000541e    00000002     --HOLE-- [fill = 0]
+                  00005420    00000040     driverlib.lib : interrupt.obj (.text:IntPendClear)
+                  00005460    00000018     rtsv7M4_T_le_v4SPD16_eabi.lib : args_main.obj (.text)
+                  00005478    00000014                                   : _lock.obj (.text)
+                  0000548c    00000012                                   : copy_zero_init.obj (.text:decompress:ZI)
+                  0000549e    00000002     --HOLE-- [fill = 0]
+                  000054a0    00000010     driverlib.lib : fpu.obj (.text:FPUEnable)
+                  000054b0    00000010                   : fpu.obj (.text:FPULazyStackingEnable)
+                  000054c0    0000000e                   : gpio.obj (.text:GPIOIntDisable)
+                  000054ce    0000000e                   : gpio.obj (.text:GPIOIntStatus)
+                  000054dc    0000000e     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_none.obj (.text:decompress:none)
+                  000054ea    0000000c     driverlib.lib : gpio.obj (.text:GPIOIntEnable)
+                  000054f6    0000000c     tm4c123gh6pm_startup_ccs.obj (.text)
+                  00005502    00000008     driverlib.lib : ssi.obj (.text:SSIBusy)
+                  0000550a    00000006                   : gpio.obj (.text:GPIOIntClear)
+                  00005510    00000006                   : sysctl.obj (.text:SysCtlDelay)
+                  00005516    00000006                   : uart.obj (.text:UARTClockSourceSet)
+                  0000551c    00000006                   : uart.obj (.text:UARTFIFOLevelSet)
+                  00005522    00000006     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24)
+                  00005528    00000004     driverlib.lib : ssi.obj (.text:SSIIntClear)
 
-.const     0    00000f5c    0000003a     
-                  00000f5c    00000028     uartstdio.obj (.const)
-                  00000f84    00000012     uartstdio.obj (.const:.string)
+.const     0    0000552c    000003a5     
+                  0000552c    00000100     cc3000lib.obj (.const:.string:rsbox)
+                  0000562c    00000100     cc3000lib.obj (.const:.string:sbox)
+                  0000572c    00000090     driverlib.lib : gpio.obj (.const:g_pui32GPIOBaseAddrs)
+                  000057bc    00000070                   : interrupt.obj (.const)
+                  0000582c    0000006c                   : sysctl.obj (.const:g_pui32Xtals)
+                  00005898    0000001c     uartstdio.obj (.const)
+                  000058b4    00000012     uartstdio.obj (.const:.string)
+                  000058c6    0000000b     cc3000lib.obj (.const:.string)
 
-.cinit     0    00000f98    00000050     
-                  00000f98    00000026     (.cinit..data.load) [load image, compression = rle]
-                  00000fbe    00000002     --HOLE-- [fill = 0]
-                  00000fc0    0000000c     (__TI_handler_table)
-                  00000fcc    00000004     --HOLE-- [fill = 0]
-                  00000fd0    00000008     (.cinit..bss.load) [load image, compression = zero_init]
-                  00000fd8    00000010     (__TI_cinit_table)
+.cinit     0    000058d8    00000040     
+                  000058d8    00000019     (.cinit..data.load) [load image, compression = rle]
+                  000058f1    00000003     --HOLE-- [fill = 0]
+                  000058f4    0000000c     (__TI_handler_table)
+                  00005900    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  00005908    00000010     (__TI_cinit_table)
 
-.bss       0    20000000    00000485     UNINITIALIZED
-                  20000000    00000400     uartstdio.obj (.bss:g_pcUARTTxBuffer)
-                  20000400    00000080     uartstdio.obj (.bss:g_pcUARTRxBuffer)
-                  20000480    00000004     (.common:g_ui32PortNum)
-                  20000484    00000001     (.common:g_bDisableEcho)
+.bss       0    20000000    00000f88     UNINITIALIZED
+                  20000000    000005f0     cc3000lib.obj (.bss:wlan_rx_buffer)
+                  200005f0    000005f0     cc3000lib.obj (.bss:wlan_tx_buffer)
+                  20000be0    00000010     (.common:key)
+                  20000bf0    00000010     --HOLE--
+                  20000c00    00000200     cc3000lib.obj (.bss:ui8DMAChannelControlStructure)
+                  20000e00    000000b0     cc3000lib.obj (.bss:expandedKey)
+                  20000eb0    00000050     cc3000lib.obj (.bss:sSpiInformation)
+                  20000f00    00000044     cc3000lib.obj (.bss:profileArray)
+                  20000f44    00000044     cc3000lib.obj (.bss:tSLInformation)
 
-.stack     0    20000488    00000200     UNINITIALIZED
-                  20000488    00000200     --HOLE--
+.stack     0    20000f88    00000200     UNINITIALIZED
+                  20000f88    00000200     --HOLE--
 
-.data      0    20000688    00000044     UNINITIALIZED
-                  20000688    00000015     main.obj (.data)
-                  2000069d    00000003     --HOLE--
-                  200006a0    00000015     uartstdio.obj (.data)
-                  200006b5    00000003     --HOLE--
-                  200006b8    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.data)
-                  200006c0    00000008                                   : exit.obj (.data)
-                  200006c8    00000004                                   : stkdepth_vars.obj (.data)
+.data      0    20001188    00000034     UNINITIALIZED
+                  20001188    00000014     cc3000lib.obj (.data)
+                  2000119c    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.data)
+                  200011a4    00000008                                   : exit.obj (.data)
+                  200011ac    00000005     uartstdio.obj (.data)
+                  200011b1    00000001     main.obj (.data)
+                  200011b2    00000002     --HOLE--
+                  200011b4    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : errno.obj (.data)
+                  200011b8    00000004                                   : stkdepth_vars.obj (.data)
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00000fd8 records: 2, size/record: 8, table size: 16
-	.data: load addr=00000f98, load size=00000026 bytes, run addr=20000688, run size=00000044 bytes, compression=rle
-	.bss: load addr=00000fd0, load size=00000008 bytes, run addr=20000000, run size=00000485 bytes, compression=zero_init
+__TI_cinit_table @ 00005908 records: 2, size/record: 8, table size: 16
+	.data: load addr=000058d8, load size=00000019 bytes, run addr=20001188, run size=00000034 bytes, compression=rle
+	.bss: load addr=00005900, load size=00000008 bytes, run addr=20000000, run size=00000f88 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00000fc0 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 000058f4 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_decompress_rle24
 	index: 1, handler: __TI_decompress_none
 	index: 2, handler: __TI_zero_init
@@ -112,68 +139,179 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 address    name
 --------   ----
-00000e71   C$$EXIT
-00000f45   ResetISR
+00005399   C$$EXIT
+000046e5   DispatcherUARTConfigure
+000046a9   DispatcherUartSendPacket
+000054a1   FPUEnable
+000054b1   FPULazyStackingEnable
+0000550b   GPIOIntClear
+000054c1   GPIOIntDisable
+000054eb   GPIOIntEnable
+000054cf   GPIOIntStatus
+00004e75   GPIOPadConfigSet
+000052c5   GPIOPinConfigure
+00005421   IntPendClear
+00004509   IntSpiGPIOHandler
+000058c6   Rcon
+000054f7   ResetISR
 UNDEFED    SHT$$INIT_ARRAY$$Base
 UNDEFED    SHT$$INIT_ARRAY$$Limit
-00000f51   UARTClockSourceSet
-000009b5   UARTEchoSet
-0000094f   UARTFlushRx
-00000977   UARTFlushTx
-000008f5   UARTPeek
-000008d3   UARTRxBytesAvail
-00000373   UARTStdioConfig
-000009e1   UARTStdioIntHandler
-000008e1   UARTTxBytesFree
-0000054d   UARTgetc
-000004d1   UARTgets
-000008af   UARTprintf
-000005b5   UARTvprintf
-0000042b   UARTwrite
-20000688   __STACK_END
+00005503   SSIBusy
+00003d01   SSIConfigure
+00005529   SSIIntClear
+000002d5   STREAM_TO_UINT16_f
+000002fb   STREAM_TO_UINT32_f
+00000cb1   SimpleLinkWaitData
+00000c95   SimpleLinkWaitEvent
+00003cdd   SpiCleanGPIOISR
+00003e85   SpiClose
+00003c8d   SpiConfigureHwMapping
+0000413b   SpiDisableSSIDMAChannels
+00004161   SpiEnableSSIDMAChannels
+00003ff9   SpiFirstWrite
+00004571   SpiIntHandler
+00003eb7   SpiOpen
+00004355   SpiReadDataCont
+00004339   SpiReadHeader
+00003311   SpiReceiveHandler
+00004471   SpiResumeSpi
+00004495   SpiTriggerRxProcessing
+00004079   SpiWrite
+00004fa5   SysCtlClockGet
+00005511   SysCtlDelay
+00005517   UARTClockSourceSet
+0000551d   UARTFIFOLevelSet
+000047e1   UARTStdioConfig
+00004959   UARTgetc
+00004893   UARTgets
+00004c87   UARTprintf
+0000498d   UARTvprintf
+00004841   UARTwrite
+000002ab   UINT16_TO_STREAM_f
+0000026d   UINT32_TO_STREAM_f
+200011b4   _Errno
+20001188   __STACK_END
 00000200   __STACK_SIZE
-20000688   __STACK_TOP
-00000fd8   __TI_CINIT_Base
-00000fe8   __TI_CINIT_Limit
-00000fc0   __TI_Handler_Table_Base
-00000fcc   __TI_Handler_Table_Limit
+20001188   __STACK_TOP
+00005908   __TI_CINIT_Base
+00005918   __TI_CINIT_Limit
+000058f4   __TI_Handler_Table_Base
+00005900   __TI_Handler_Table_Limit
 00000001   __TI_args_main
-00000c09   __TI_auto_init
-200006c0   __TI_cleanup_ptr
-00000f37   __TI_decompress_none
-00000f57   __TI_decompress_rle24
-200006c4   __TI_dtors_ptr
+00005159   __TI_auto_init
+200011a4   __TI_cleanup_ptr
+000054dd   __TI_decompress_none
+00005523   __TI_decompress_rle24
+200011a8   __TI_dtors_ptr
 00000000   __TI_static_base__
-00000f25   __TI_zero_init
-00000b6d   __aeabi_memcpy
-00000b6d   __aeabi_memcpy4
-00000b6d   __aeabi_memcpy8
-00000eb5   __aeabi_uidivmod
+0000548d   __TI_zero_init
+000051ed   __aeabi_memclr
+000051ed   __aeabi_memclr4
+000051ed   __aeabi_memclr8
+000050bd   __aeabi_memcpy
+000050bd   __aeabi_memcpy4
+000050bd   __aeabi_memcpy8
+000051ef   __aeabi_memset
+000051ef   __aeabi_memset4
+000051ef   __aeabi_memset8
+000053dd   __aeabi_uidivmod
 ffffffff   __binit__
 ffffffff   __c_args__
-20000488   __stack
-00000ef9   _args_main
-00000de5   _c_int00
-200006b8   _lock
-00000f1f   _nop
-00000f17   _register_lock
-00000f11   _register_unlock
-200006bc   _unlock
-00000e75   abort
+20000f88   __stack
+00005461   _args_main
+0000530d   _c_int00
+2000119c   _lock
+00005487   _nop
+0000547f   _register_lock
+00005479   _register_unlock
+200011a0   _unlock
+0000539d   abort
+00002ad9   accept
+0000299d   aes_decrypt
+00002985   aes_encrypt
+000029b5   aes_read_key
+000029cb   aes_write_key
+00002b59   bind
 ffffffff   binit
-00000e2d   copy_in
-00000e7d   exit
+00002a8b   closesocket
+00002cd1   connect
+00005355   copy_in
+000053a5   exit
+20000e00   expandedKey
 00000000   g_pfnVectors
-00000d15   init_clock
-00000d51   loop
-00000d5d   main
-200006c8   main_func_sp
-00000b6d   memcpy
-20000692   pass
-00000c9d   serial_begin
-00000d31   setup
-20000689   ssid
-00000d25   wifi_begin
+2000118c   g_pui8Dummy
+20001198   g_uluDMAErrCount
+00000c3d   get_socket_active_status
+00002c35   gethostbyname
+00002f21   getsockopt
+00000ccb   hci_command_send
+00000d91   hci_data_command_send
+00000d17   hci_data_send
+00000419   hci_event_handler
+00000e0d   hci_patch_send
+000008e1   hci_unsol_event_handler
+00000337   hci_unsol_handle_patch_request
+00000b41   hci_unsolicited_event_handler
+00004cbd   init_satellite
+00003f0b   init_spi
+20000be0   key
+00002bd9   listen
+00004e13   loop
+00004e1f   main
+200011b8   main_func_sp
+000031fd   mdnsAdvertiser
+000050bd   memcpy
+000051f5   memset
+000011c3   netapp_arp_flush
+00000f5f   netapp_config_mac_adrress
+00000f71   netapp_dhcp
+000011a1   netapp_ipconfig
+0000114d   netapp_ping_report
+000010e3   netapp_ping_send
+00001175   netapp_ping_stop
+000011ef   netapp_set_debug_level
+00001023   netapp_timeout_values
+000013f9   nvmem_create_entry
+00001325   nvmem_get_mac_address
+00001239   nvmem_read
+000013bd   nvmem_read_sp_version
+00001311   nvmem_set_mac_address
+0000129f   nvmem_write
+00001339   nvmem_write_patch
+20000f00   profileArray
+00003009   recv
+00003035   recvfrom
+0000552c   rsbox
+20000eb0   sSpiInformation
+0000562c   sbox
+00002d59   select
+000031a5   send
+000031cf   sendto
+00000b85   set_socket_active_status
+00002e81   setsockopt
+00004e05   setup
+00002a25   socket
+20001188   socket_active_status
+20000f44   tSLInformation
+2000118e   tSpiReadHeader
+000035e5   wlan_add_profile
+000033fb   wlan_connect
+00003509   wlan_disconnect
+000032cb   wlan_init
+000038bf   wlan_ioctl_del_profile
+000038fb   wlan_ioctl_get_scan_results
+0000354d   wlan_ioctl_set_connection_policy
+00003933   wlan_ioctl_set_scan_params
+00003a51   wlan_ioctl_statusget
+20000000   wlan_rx_buffer
+000039d9   wlan_set_event_mask
+00003b45   wlan_smart_config_process
+00003adb   wlan_smart_config_set_prefix
+00003a75   wlan_smart_config_start
+00003ab7   wlan_smart_config_stop
+0000332d   wlan_start
+000033d3   wlan_stop
+200005f0   wlan_tx_buffer
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -184,63 +322,174 @@ address    name
 00000000   g_pfnVectors
 00000001   __TI_args_main
 00000200   __STACK_SIZE
-00000373   UARTStdioConfig
-0000042b   UARTwrite
-000004d1   UARTgets
-0000054d   UARTgetc
-000005b5   UARTvprintf
-000008af   UARTprintf
-000008d3   UARTRxBytesAvail
-000008e1   UARTTxBytesFree
-000008f5   UARTPeek
-0000094f   UARTFlushRx
-00000977   UARTFlushTx
-000009b5   UARTEchoSet
-000009e1   UARTStdioIntHandler
-00000b6d   __aeabi_memcpy
-00000b6d   __aeabi_memcpy4
-00000b6d   __aeabi_memcpy8
-00000b6d   memcpy
-00000c09   __TI_auto_init
-00000c9d   serial_begin
-00000d15   init_clock
-00000d25   wifi_begin
-00000d31   setup
-00000d51   loop
-00000d5d   main
-00000de5   _c_int00
-00000e2d   copy_in
-00000e71   C$$EXIT
-00000e75   abort
-00000e7d   exit
-00000eb5   __aeabi_uidivmod
-00000ef9   _args_main
-00000f11   _register_unlock
-00000f17   _register_lock
-00000f1f   _nop
-00000f25   __TI_zero_init
-00000f37   __TI_decompress_none
-00000f45   ResetISR
-00000f51   UARTClockSourceSet
-00000f57   __TI_decompress_rle24
-00000fc0   __TI_Handler_Table_Base
-00000fcc   __TI_Handler_Table_Limit
-00000fd8   __TI_CINIT_Base
-00000fe8   __TI_CINIT_Limit
-20000488   __stack
-20000688   __STACK_END
-20000688   __STACK_TOP
-20000689   ssid
-20000692   pass
-200006b8   _lock
-200006bc   _unlock
-200006c0   __TI_cleanup_ptr
-200006c4   __TI_dtors_ptr
-200006c8   main_func_sp
+0000026d   UINT32_TO_STREAM_f
+000002ab   UINT16_TO_STREAM_f
+000002d5   STREAM_TO_UINT16_f
+000002fb   STREAM_TO_UINT32_f
+00000337   hci_unsol_handle_patch_request
+00000419   hci_event_handler
+000008e1   hci_unsol_event_handler
+00000b41   hci_unsolicited_event_handler
+00000b85   set_socket_active_status
+00000c3d   get_socket_active_status
+00000c95   SimpleLinkWaitEvent
+00000cb1   SimpleLinkWaitData
+00000ccb   hci_command_send
+00000d17   hci_data_send
+00000d91   hci_data_command_send
+00000e0d   hci_patch_send
+00000f5f   netapp_config_mac_adrress
+00000f71   netapp_dhcp
+00001023   netapp_timeout_values
+000010e3   netapp_ping_send
+0000114d   netapp_ping_report
+00001175   netapp_ping_stop
+000011a1   netapp_ipconfig
+000011c3   netapp_arp_flush
+000011ef   netapp_set_debug_level
+00001239   nvmem_read
+0000129f   nvmem_write
+00001311   nvmem_set_mac_address
+00001325   nvmem_get_mac_address
+00001339   nvmem_write_patch
+000013bd   nvmem_read_sp_version
+000013f9   nvmem_create_entry
+00002985   aes_encrypt
+0000299d   aes_decrypt
+000029b5   aes_read_key
+000029cb   aes_write_key
+00002a25   socket
+00002a8b   closesocket
+00002ad9   accept
+00002b59   bind
+00002bd9   listen
+00002c35   gethostbyname
+00002cd1   connect
+00002d59   select
+00002e81   setsockopt
+00002f21   getsockopt
+00003009   recv
+00003035   recvfrom
+000031a5   send
+000031cf   sendto
+000031fd   mdnsAdvertiser
+000032cb   wlan_init
+00003311   SpiReceiveHandler
+0000332d   wlan_start
+000033d3   wlan_stop
+000033fb   wlan_connect
+00003509   wlan_disconnect
+0000354d   wlan_ioctl_set_connection_policy
+000035e5   wlan_add_profile
+000038bf   wlan_ioctl_del_profile
+000038fb   wlan_ioctl_get_scan_results
+00003933   wlan_ioctl_set_scan_params
+000039d9   wlan_set_event_mask
+00003a51   wlan_ioctl_statusget
+00003a75   wlan_smart_config_start
+00003ab7   wlan_smart_config_stop
+00003adb   wlan_smart_config_set_prefix
+00003b45   wlan_smart_config_process
+00003c8d   SpiConfigureHwMapping
+00003cdd   SpiCleanGPIOISR
+00003d01   SSIConfigure
+00003e85   SpiClose
+00003eb7   SpiOpen
+00003f0b   init_spi
+00003ff9   SpiFirstWrite
+00004079   SpiWrite
+0000413b   SpiDisableSSIDMAChannels
+00004161   SpiEnableSSIDMAChannels
+00004339   SpiReadHeader
+00004355   SpiReadDataCont
+00004471   SpiResumeSpi
+00004495   SpiTriggerRxProcessing
+00004509   IntSpiGPIOHandler
+00004571   SpiIntHandler
+000046a9   DispatcherUartSendPacket
+000046e5   DispatcherUARTConfigure
+000047e1   UARTStdioConfig
+00004841   UARTwrite
+00004893   UARTgets
+00004959   UARTgetc
+0000498d   UARTvprintf
+00004c87   UARTprintf
+00004cbd   init_satellite
+00004e05   setup
+00004e13   loop
+00004e1f   main
+00004e75   GPIOPadConfigSet
+00004fa5   SysCtlClockGet
+000050bd   __aeabi_memcpy
+000050bd   __aeabi_memcpy4
+000050bd   __aeabi_memcpy8
+000050bd   memcpy
+00005159   __TI_auto_init
+000051ed   __aeabi_memclr
+000051ed   __aeabi_memclr4
+000051ed   __aeabi_memclr8
+000051ef   __aeabi_memset
+000051ef   __aeabi_memset4
+000051ef   __aeabi_memset8
+000051f5   memset
+000052c5   GPIOPinConfigure
+0000530d   _c_int00
+00005355   copy_in
+00005399   C$$EXIT
+0000539d   abort
+000053a5   exit
+000053dd   __aeabi_uidivmod
+00005421   IntPendClear
+00005461   _args_main
+00005479   _register_unlock
+0000547f   _register_lock
+00005487   _nop
+0000548d   __TI_zero_init
+000054a1   FPUEnable
+000054b1   FPULazyStackingEnable
+000054c1   GPIOIntDisable
+000054cf   GPIOIntStatus
+000054dd   __TI_decompress_none
+000054eb   GPIOIntEnable
+000054f7   ResetISR
+00005503   SSIBusy
+0000550b   GPIOIntClear
+00005511   SysCtlDelay
+00005517   UARTClockSourceSet
+0000551d   UARTFIFOLevelSet
+00005523   __TI_decompress_rle24
+00005529   SSIIntClear
+0000552c   rsbox
+0000562c   sbox
+000058c6   Rcon
+000058f4   __TI_Handler_Table_Base
+00005900   __TI_Handler_Table_Limit
+00005908   __TI_CINIT_Base
+00005918   __TI_CINIT_Limit
+20000000   wlan_rx_buffer
+200005f0   wlan_tx_buffer
+20000be0   key
+20000e00   expandedKey
+20000eb0   sSpiInformation
+20000f00   profileArray
+20000f44   tSLInformation
+20000f88   __stack
+20001188   __STACK_END
+20001188   __STACK_TOP
+20001188   socket_active_status
+2000118c   g_pui8Dummy
+2000118e   tSpiReadHeader
+20001198   g_uluDMAErrCount
+2000119c   _lock
+200011a0   _unlock
+200011a4   __TI_cleanup_ptr
+200011a8   __TI_dtors_ptr
+200011b4   _Errno
+200011b8   main_func_sp
 ffffffff   __binit__
 ffffffff   __c_args__
 ffffffff   binit
 UNDEFED    SHT$$INIT_ARRAY$$Base
 UNDEFED    SHT$$INIT_ARRAY$$Limit
 
-[62 symbols]
+[173 symbols]

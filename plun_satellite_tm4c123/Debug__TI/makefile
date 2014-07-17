@@ -8,13 +8,13 @@ CG_TOOL_ROOT := c:/ti/ccsv6/tools/compiler/arm_5.1.5
 
 ORDERED_OBJS += \
 $(GEN_CMDS__FLAG) \
-"./include/uart.obj" \
 "./uartstdio.obj" \
 "./tm4c123gh6pm_startup_ccs.obj" \
 "./main.obj" \
-"C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/ccs/Debug/driverlib.lib" \
+"./cc3000lib.obj" \
 "../tm4c123gh6pm.cmd" \
 -l"libc.a" \
+-l"C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/ccs/Debug/driverlib.lib" \
 
 -include ../makefile.init
 
@@ -24,9 +24,7 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
--include include/subdir_vars.mk
 -include subdir_rules.mk
--include include/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -130,10 +128,10 @@ BIN_OUTPUTS__QUOTED += \
 all: plun_satellite_tm4c123.out
 
 # Tool invocations
-plun_satellite_tm4c123.out: $(OBJS) $(CMD_SRCS) $(LDS_SRCS) $(LIB_SRCS) $(GEN_CMDS)
+plun_satellite_tm4c123.out: $(OBJS) $(CMD_SRCS) $(LDS_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"c:/ti/ccsv6/tools/compiler/arm_5.1.5/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -g --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED --define=CC3000_TM4C123_SPI --define=_POSIX_SOURCE --display_error_number --diag_warning=225 --diag_wrap=off -z -m"plun_satellite_tm4c123.map" --heap_size=0 --stack_size=512 -i"c:/ti/ccsv6/tools/compiler/arm_5.1.5/lib" -i"c:/ti/ccsv6/tools/compiler/arm_5.1.5/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="plun_satellite_tm4c123_linkInfo.xml" --rom_model -o "plun_satellite_tm4c123.out" $(ORDERED_OBJS)
+	"c:/ti/ccsv6/tools/compiler/arm_5.1.5/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -g --define=_POSIX_SOURCE --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=CC3000_TM4C123_SPI --define=ccs="ccs" --display_error_number --diag_warning=225 --diag_wrap=off -z -m"plun_satellite_tm4c123.map" --heap_size=0 --stack_size=512 -i"c:/ti/ccsv6/tools/compiler/arm_5.1.5/lib" -i"c:/ti/ccsv6/tools/compiler/arm_5.1.5/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="plun_satellite_tm4c123_linkInfo.xml" --rom_model -o "plun_satellite_tm4c123.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -146,8 +144,8 @@ plun_satellite_tm4c123.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.pp" "tm4c123gh6pm_startup_ccs.pp" "uartstdio.pp" "include\uart.pp" 
-	-$(RM) "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" "include\uart.obj" 
+	-$(RM) "cc3000lib.pp" "main.pp" "tm4c123gh6pm_startup_ccs.pp" "uartstdio.pp" 
+	-$(RM) "cc3000lib.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

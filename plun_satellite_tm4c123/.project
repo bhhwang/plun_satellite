@@ -26,9 +26,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>driverlib.lib</name>
+			<name>cc3000lib.c</name>
 			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/ti/TivaWare_C_Series-2.1.0.12573/driverlib/ccs/Debug/driverlib.lib</locationURI>
+			<locationURI>PARENT-5-PROJECT_LOC/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/cc3000lib.c</locationURI>
 		</link>
 		<link>
 			<name>uartstdio.c</name>
