@@ -41,7 +41,6 @@ static void IntDefaultHandler(void);
 //
 //*****************************************************************************
 extern void _c_int00(void);
-extern void Timer0IntHandler(void);
 
 
 //*****************************************************************************
@@ -57,6 +56,7 @@ extern uint32_t __STACK_TOP;
 //
 //*****************************************************************************
 // To be added by user
+extern void Timer0IntHandler(void);				//Timer0 Interrupt
 extern void IntSpiGPIOHandler(void);
 extern void SpiIntHandler(void);
 extern void SysTickHandler(void);
