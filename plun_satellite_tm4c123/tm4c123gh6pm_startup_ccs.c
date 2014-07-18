@@ -57,7 +57,7 @@ extern uint32_t __STACK_TOP;
 // To be added by user
 extern void IntSpiGPIOHandler(void);
 extern void SpiIntHandler(void);
-extern void SysTickHandler(void);
+extern void PlunWorker(void);
 extern void UARTStdioIntHandler(void);
 
 //*****************************************************************************
@@ -86,7 +86,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
     IntDefaultHandler,                      // The PendSV handler
-    SysTickHandler,                      // The SysTick handler
+    PlunWorker,                      // The SysTick handler
     IntDefaultHandler,                      // GPIO Port A
     IntSpiGPIOHandler,                      // GPIO Port B
     IntDefaultHandler,                      // GPIO Port C

@@ -35,28 +35,38 @@
 #include "driverlib/uart.h"
 #include "driverlib/systick.h"
 
-#ifdef USE_UART
-#include "utils/uartstdio.h"
-#include "dispatcher.h"	//uart dispatcher
-#endif
-
+/*
+ * default
+ */
 #include "inc/hw_memmap.h"
 #include "inc/hw_ints.h"
 
+#define WORKER_INT_TIME	100	//ms, must under 250ms
+
+/*
+ * definition for UART
+ */
+#ifdef USE_UART
+#include "utils/uartstdio.h"
+#include "dispatcher.h"	//uart dispatcher
+
+#define UART_BAUDRATE	115200
+#define UART_PORT	0
+#endif
+
+/*
+ * definition for WIFI
+ */
 #ifdef USE_WIFI
 #include "spi.h"
 #include "wlan.h"
+
+#define SSID = "nsynapse";
+#define PASS = "ghkdqudgns";
 #endif
 
-#ifdef USE_UART
-	#define UART_BAUDRATE	115200
-	#define UART_PORT	0
-#endif
 
-#ifdef USE_WIFI
-	#define SSID = "nsynapse";
-	#define PASS = "ghkdqudgns";
-#endif
+
 
 
 #ifdef USE_WIFI
@@ -293,6 +303,8 @@ void init_satellite()
 	 * init clock
 	 */
 	MAP_SysCtlClockSet(SYSCTL_SYSDIV_3 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);	//66.6..MHz
+
+	MAP_IntMasterEnable();
 
 	/*
 	 * Enable peripherals
