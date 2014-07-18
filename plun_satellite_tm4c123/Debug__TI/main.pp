@@ -18,11 +18,11 @@ main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/uart.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/systick.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/utils/uartstdio.h
 main.obj: c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/stdarg.h
-main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_memmap.h
-main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_ints.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/uart/dispatcher.h
 main.obj: c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/string.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_ints.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_nvic.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_memmap.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_types.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_uart.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/interrupt.h
@@ -52,11 +52,11 @@ C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/uart.h:
 C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/systick.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/utils/uartstdio.h: 
 c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/stdarg.h: 
-C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_memmap.h: 
-C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_ints.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/uart/dispatcher.h: 
 c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/string.h: 
+C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_ints.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_nvic.h: 
+C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_memmap.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_types.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/inc/hw_uart.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/interrupt.h: 

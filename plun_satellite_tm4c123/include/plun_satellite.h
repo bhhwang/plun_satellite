@@ -16,6 +16,8 @@
 #define USE_UART
 #define USE_WIFI	//cc3000
 #define OSC_CLOCK	16000000L	//osciilator clock
+#define HIGH	0xff
+#define LOW		!0XFF
 
 
 #include <stdint.h>
@@ -35,34 +37,16 @@
 
 #ifdef USE_UART
 #include "utils/uartstdio.h"
+#include "dispatcher.h"	//uart dispatcher
 #endif
 
 #include "inc/hw_memmap.h"
 #include "inc/hw_ints.h"
 
-#include "dispatcher.h"	//uart dispatcher
-
 #ifdef USE_WIFI
 #include "spi.h"
 #include "wlan.h"
-/*#include "evnt_handler.h"
-#include "nvmem.h"
-#include "cc3000_common.h"
-#include "netapp.h"
-#include "spi.h"
-#include "hci.h"
-#include "spi_version.h"
-#include "board.h"
-#include "host_driver_version.h"
-#include "security.h"*/
 #endif
-
-/*#include "driverlib/gpio.h"
-#include "driverlib/rom.h"
-#include "driverlib/pin_map.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/uart.h"
-#include "inc/hw_memmap.h"*/
 
 #ifdef USE_UART
 	#define UART_BAUDRATE	115200
@@ -73,6 +57,7 @@
 	#define SSID = "nsynapse";
 	#define PASS = "ghkdqudgns";
 #endif
+
 
 #ifdef USE_WIFI
 char* sendDriverPatch(unsigned long *Length)
@@ -102,7 +87,7 @@ void CC3000_AsyncCallback(long lEventType, char *data, unsigned char length)
 long ReadWlanInterruptPin(void){ return MAP_GPIOPinRead(GPIO_PORTB_BASE, GPIO_PIN_2); }
 void WlanInterruptEnable(){ MAP_GPIOIntEnable(GPIO_PORTB_BASE, GPIO_PIN_2); }
 void WlanInterruptDisable(){ MAP_GPIOIntDisable(GPIO_PORTB_BASE, GPIO_PIN_2); }
-void WriteWlanPin( unsigned char val ){ val?MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, PIN_HIGH):MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, PIN_LOW); }
+void WriteWlanPin( unsigned char val ){ val?MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, HIGH):MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, LOW); }
 
 typedef struct
 {
@@ -298,7 +283,7 @@ void wifi_scan()
 /*
  * initialize
  */
-void init_wifi();
+void init_wifi();		//initialize WiFi(CC3000 module)
 void init_satellite()
 {
 	FPUEnable();
@@ -307,12 +292,12 @@ void init_satellite()
 	/*
 	 * init clock
 	 */
-	MAP_SysCtlClockSet(SYSCTL_SYSDIV_3 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);	//50MHz
+	MAP_SysCtlClockSet(SYSCTL_SYSDIV_3 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);	//66.6..MHz
 
 	/*
 	 * Enable peripherals
 	 */
-	MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+	MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);	//for LED indication
 
 #ifdef USE_UART
 	MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
@@ -328,28 +313,27 @@ void init_satellite()
 	 * configure
 	 */
 	MAP_GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3);
-	MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, 0x02);
+	MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, LOW);	//off
 
 #ifdef USE_UART
 	MAP_GPIOPinConfigure(GPIO_PA0_U0RX);
 	MAP_GPIOPinConfigure(GPIO_PA1_U0TX);
 	MAP_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 	UARTStdioConfig(UART_PORT, UART_BAUDRATE, SysCtlClockGet());
-	UARTprintf("UART Setting success.");
 #endif
 
 #ifdef USE_WIFI
-	MAP_GPIOIntDisable(GPIO_PORTB_BASE, 0xFF);	//interrupt disable
+	MAP_GPIOIntDisable(GPIO_PORTB_BASE, HIGH);	//interrupt disable
 
 	MAP_GPIOPinTypeGPIOInput(GPIO_PORTB_BASE, GPIO_PIN_2);	//IRQ as input
-	GPIOPadConfigSet(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+	MAP_GPIOPadConfigSet(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
 	MAP_GPIOIntTypeSet(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_FALLING_EDGE);		//enable interrupt
 
 	MAP_GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, GPIO_PIN_5);	//sw enable
 	MAP_GPIODirModeSet(GPIO_PORTB_BASE, GPIO_PIN_5, GPIO_DIR_MODE_OUT);
 	MAP_GPIOPadConfigSet(GPIO_PORTB_BASE, GPIO_PIN_5, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPD);
 
-	MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, PIN_LOW);	//disable?
+	MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, LOW);	//disable?
 
 	SysCtlDelay(600000);
 	SysCtlDelay(600000);
@@ -358,8 +342,8 @@ void init_satellite()
 	MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
 	MAP_GPIOPinTypeGPIOOutput(GPIO_PORTE_BASE, GPIO_PIN_0);
 
-	GPIOPadConfigSet(GPIO_PORTE_BASE, GPIO_PIN_0, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-	MAP_GPIOPinWrite(GPIO_PORTE_BASE, GPIO_PIN_0, PIN_HIGH);	//chip select
+	MAP_GPIOPadConfigSet(GPIO_PORTE_BASE, GPIO_PIN_0, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+	MAP_GPIOPinWrite(GPIO_PORTE_BASE, GPIO_PIN_0, HIGH);	//chip select
 
 	MAP_GPIOIntEnable(GPIO_PORTB_BASE, GPIO_PIN_2);	//enable interrupt for WLAN_IRQ pin
 
@@ -368,77 +352,27 @@ void init_satellite()
 	MAP_IntEnable(INT_GPIOB);	//spi
 
 	init_wifi();
-
-	/////////////////////////
-	/*uint32_t ui32SysClock = SysCtlClockGet();
-	init_spi(1000000, ui32SysClock);
-	MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
-	MAP_GPIOPinConfigure(GPIO_PA0_U0RX);
-	MAP_GPIOPinConfigure(GPIO_PA1_U0TX);
-	MAP_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
-	UARTStdioConfig(0, 115200, ui32SysClock);
-	UARTprintf("\nWiFi SSID Scan Example Started.\n");
-	UARTprintf("Initializing CC3000 WiFi stack... ");
-	wlan_init(CC3000_AsyncCallback, sendWLFWPatch, sendDriverPatch,
-	              sendBootLoaderPatch, ReadWlanInterruptPin,
-	              WlanInterruptEnable, WlanInterruptDisable,
-	              WriteWlanPin);
-	 UARTprintf("Done.\nStarting WiFi stack... ");
-	wlan_start(0);
-	wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE | HCI_EVNT_WLAN_UNSOL_INIT |
-	                        HCI_EVNT_WLAN_ASYNC_PING_REPORT);
-	ROM_SysCtlDelay((ui32SysClock / 10) / 3);
-	SysTickPeriodSet(SysCtlClockGet() / 10);
-	SysTickIntEnable();
-	SysTickEnable();
-	UARTprintf("Done.\n");*/
-
 #endif
 }
 
 void init_wifi()
 {
-	UARTprintf("%d",SysCtlClockGet());
 	init_spi(1000000, SysCtlClockGet());
 
 	MAP_IntMasterEnable();	//enable processor interrupt
 
 	wlan_init(CC3000_AsyncCallback, sendWLFWPatch, sendDriverPatch, sendBootLoaderPatch,
 				ReadWlanInterruptPin, WlanInterruptEnable, WlanInterruptDisable, WriteWlanPin);
-	UARTprintf("Done.\nStarting WiFi stack... ");
 	wlan_start(0);
 	wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE | HCI_EVNT_WLAN_UNSOL_INIT | HCI_EVNT_WLAN_ASYNC_PING_REPORT);
 
-	MAP_SysCtlDelay(2000000);
-	SysTickPeriodSet(SysCtlClockGet() / 10);
+	//MAP_SysCtlDelay(2000000);
+	SysTickPeriodSet(SysCtlClockGet()/10);	//100ms tick
+	UARTprintf("%d, %d ",SysCtlClockGet(), SysTickValueGet());
 	SysTickIntEnable();
 	SysTickEnable();
 
 	UARTprintf("Done.\n");
-}
-
-#define SYSTICK_PER_SECOND	10
-void SysTickHandler(void)
-{
-    static unsigned long ulTickCount = 0;
-
-    //
-    // Increment the tick counter.
-    //
-    ulTickCount++;
-
-    //
-    // Has half a second passed since we last called the event handler?
-    //
-    if(ulTickCount >= (SYSTICK_PER_SECOND / 2))
-    {
-        //
-        // Yes = call the unsolicited event handler.  We need to do this a
-        // few times each second.
-        //
-        hci_unsolicited_event_handler();
-        ulTickCount = 0;
-    }
 }
 
 #endif /* PLUNBASE_H_ */

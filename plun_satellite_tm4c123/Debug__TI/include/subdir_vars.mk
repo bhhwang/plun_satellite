@@ -4,21 +4,21 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../include/wifi.c 
+../include/inth.c 
 
 OBJS += \
-./include/wifi.obj 
+./include/inth.obj 
 
 C_DEPS += \
-./include/wifi.pp 
+./include/inth.pp 
 
 C_DEPS__QUOTED += \
-"include\wifi.pp" 
+"include\inth.pp" 
 
 OBJS__QUOTED += \
-"include\wifi.obj" 
+"include\inth.obj" 
 
 C_SRCS__QUOTED += \
-"../include/wifi.c" 
+"../include/inth.c" 
 
 

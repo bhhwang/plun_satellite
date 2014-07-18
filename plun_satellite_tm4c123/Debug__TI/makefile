@@ -8,6 +8,7 @@ CG_TOOL_ROOT := c:/ti/ccsv6/tools/compiler/arm_5.1.5
 
 ORDERED_OBJS += \
 $(GEN_CMDS__FLAG) \
+"./include/inth.obj" \
 "./uartstdio.obj" \
 "./tm4c123gh6pm_startup_ccs.obj" \
 "./main.obj" \
@@ -24,7 +25,9 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include include/subdir_vars.mk
 -include subdir_rules.mk
+-include include/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -144,8 +147,8 @@ plun_satellite_tm4c123.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "cc3000lib.pp" "main.pp" "tm4c123gh6pm_startup_ccs.pp" "uartstdio.pp" 
-	-$(RM) "cc3000lib.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" 
+	-$(RM) "cc3000lib.pp" "main.pp" "tm4c123gh6pm_startup_ccs.pp" "uartstdio.pp" "include\inth.pp" 
+	-$(RM) "cc3000lib.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" "include\inth.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
