@@ -18,7 +18,7 @@ void setup()
 {
 	init_satellite();
 
-	UARTprintf("12345678901234567890");
+	wifi_scan();
 }
 
 void loop()
