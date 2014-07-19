@@ -40,6 +40,7 @@ void PlunWorker(void)
     case	INIT:	led(OFF);	setState(IDLE); break;
     case	READY:	led_blink(RED);	break;
     case	DHCP_CONNECTED:	led(RED); break;
+    case	PLUN_CONNECTED: led(BLUE); break;
     }
 }
 

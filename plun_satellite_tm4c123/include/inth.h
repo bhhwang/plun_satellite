@@ -2,14 +2,14 @@
  * inth.h
  *
  *  Created on: 2014. 7. 19.
- *      Author: byunghun
+ *      Author: Byunghun Hwang <bhhwang@nsynapse.com>
  */
 
 #ifndef INTH_H_
 #define INTH_H_
 
 
-enum state { IDLE=0, INIT=1, READY=2, DHCP_CONNECTED=10};
+enum state { IDLE=0, INIT=1, READY=2, DHCP_CONNECTED=3, PLUN_CONNECTED=4};
 enum ledcolor {RED=2, BLUE=4, GREEN=8, OFF=0 };
 
 

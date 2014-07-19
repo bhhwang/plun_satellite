@@ -112,11 +112,6 @@ void CC3000_AsyncCallback(long lEventType, char *data, unsigned char length)
 
 	if (lEventType == HCI_EVNT_WLAN_UNSOL_DHCP)
 	{
-		// Notes:
-		// 1) IP config parameters are received swapped
-		// 2) IP config parameters are valid only if status is OK, i.e. ulCC3000DHCP becomes 1
-
-		// only if status is OK, the flag is set to 1 and the addresses are valid
 		if ( *(data + NETAPP_IPCONFIG_MAC_OFFSET) == 0)
 			ulCC3000DHCP = 1;
 		else
@@ -124,13 +119,11 @@ void CC3000_AsyncCallback(long lEventType, char *data, unsigned char length)
 	}
 
 	if (lEventType == HCI_EVENT_CC3000_CAN_SHUT_DOWN)
-	{
 		OkToDoShutDown = 1;
-	}
 }
 
 long ReadWlanInterruptPin(void){ return MAP_GPIOPinRead(GPIO_PORTB_BASE, GPIO_PIN_2); }
-void WlanInterruptEnable(){ MAP_GPIOIntEnable(GPIO_PORTB_BASE, GPIO_PIN_2); }
+void WlanInterruptEnable(){ MAP_GPIOIntEnab hle(GPIO_PORTB_BASE, GPIO_PIN_2); }
 void WlanInterruptDisable(){ MAP_GPIOIntDisable(GPIO_PORTB_BASE, GPIO_PIN_2); }
 void WriteWlanPin( unsigned char val ){ val?MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, HIGH):MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, LOW); }
 
@@ -163,165 +156,6 @@ tScanResult;
 #define SCAN_SSID_LEN(x) (((x) & SCAN_SSID_LEN_MASK) >> SCAN_SSID_LEN_SHIFT)
 char *g_ppcSecurity[] = {"Open", "WEP", "WPA", "WPA2"};
 
-void wifi_scan()
-{
-	tScanResult sScanResult;
-    long lRetcode, lLoop, lCount;
-    unsigned long pulIntervalList[10];
-
-    for(lLoop = 0; lLoop < 10; lLoop++)
-        pulIntervalList[lLoop] = 2000;
-
-    UARTprintf("Setting SSID scan parameters... ");
-    lRetcode = wlan_ioctl_set_scan_params(1, 20, 30, 2, 0x7FF, -80, 0, 205, pulIntervalList);
-
-    UARTprintf("Done\n");
-
-    if(lRetcode == 0)
-	{
-		//
-		// Yes. Wait for the scan to stop.
-		//
-		UARTprintf("Scanning...\n");
-
-		do
-		{
-			lRetcode = wlan_ioctl_statusget();
-		}
-		while(lRetcode);
-
-		UARTprintf("Scan completed. Querying results...\n");
-
-		//
-		// Retrieve the first scan result to allow us to determine how many
-		// APs were found (if any).
-		//
-		lRetcode = wlan_ioctl_get_scan_results(0, (unsigned char *)&sScanResult);
-		if(lRetcode == 0)
-		{
-			//
-			// We got the first scan result.  Did the scan complete
-			// successfully?
-			//
-			if((sScanResult.ui32Status == SCAN_NO_RESULT) ||
-			   (sScanResult.ui32NumNetworks == 0))
-			{
-				//
-				// We found no networks.
-				//
-				UARTprintf("No wireless networks found.\n");
-			}
-			else
-			{
-				//
-				// We found something so read the rest of the results and
-				// dump the information.
-				//
-				UARTprintf("Found %d networks.\n\n", sScanResult.ui32NumNetworks);
-
-				//
-				// Remember the number of networks that were found.
-				//
-				lLoop = (long)sScanResult.ui32NumNetworks;
-
-				//
-				// Initialize our network number counter.
-				//
-				lCount = 1;
-
-				do
-				{
-					uint32_t ui32SSIDLen;
-
-					//
-					// Ensure that the SSID is NULL terminated.
-					//
-					ui32SSIDLen = SCAN_SSID_LEN(sScanResult.ui8SecuritySSIDLen);
-
-					//
-					// If the SSID length we decode is larger than 31,
-					// something's wrong but clip the length accordingly. We
-					// clip at 32 characters to ensure that we don't overwrite
-					// the start of the BSSID field which appears next in
-					// memory.
-					//
-					if(ui32SSIDLen > 31)
-					{
-						ui32SSIDLen = 31;
-					}
-
-					sScanResult.pcSSID[ui32SSIDLen] = '\0';
-
-					//
-					// Print information on the current network.
-					//
-					if(sScanResult.ui8ValidRSSI & SCAN_IS_VALID)
-					{
-						//
-						// Extract the security information from the returned
-						// structure.
-						//
-						ui32SSIDLen =
-								SCAN_SEC_INDEX(sScanResult.ui8SecuritySSIDLen);
-
-						UARTprintf("%2d: %02x%02x%02x%02x%02x%02x %s %s\n",
-								   lCount,
-								   sScanResult.pcBSSID[0],
-								   sScanResult.pcBSSID[1],
-								   sScanResult.pcBSSID[2],
-								   sScanResult.pcBSSID[3],
-								   sScanResult.pcBSSID[4],
-								   sScanResult.pcBSSID[5],
-								   g_ppcSecurity[ui32SSIDLen],
-								   sScanResult.pcSSID);
-					}
-					else
-					{
-						//
-						// The structure passed back to us was marked as
-						// invalid.
-						//
-						UARTprintf("%d - Invalid entry received!\n", lCount);
-					}
-
-					//
-					// Decrement our network counter.
-					//
-					lLoop--;
-
-					//
-					// Increment our network number count.
-					//
-					lCount++;
-
-					//
-					// Get the information on the next network if there is
-					// another one to get.
-					//
-					if(lLoop)
-					{
-						lRetcode = wlan_ioctl_get_scan_results(0,
-												(unsigned char *)&sScanResult);
-					}
-				}
-				while(lLoop && (lRetcode == 0));
-			}
-		}
-		else
-		{
-			UARTprintf("Error from wlan_ioctl_get_scan_results!\n");
-		}
-	}
-	else
-	{
-		//
-		// Tell the user an error was reported.
-		//
-		UARTprintf("Error from wlan_ioctl_set_scan_params!\n");
-	}
-
-	UARTprintf("\nScanning completed.\n");
-}
 #endif
 
 
@@ -385,8 +219,6 @@ void init_satellite()
 
 	MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, LOW);
 
-	//MAP_SysCtlDelay(600000);	//wait for ..
-
 	MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
 	MAP_GPIOPinTypeGPIOOutput(GPIO_PORTE_BASE, GPIO_PIN_0);
 
@@ -435,7 +267,6 @@ void init_worker()
 
 void connect_ap(char* ssid, const char* pass)
 {
-	UARTprintf("connecting to AP...\n");
 	init_spi(1000000, SysCtlClockGet());
 	ulCC3000WasConnected = 0;
 
@@ -461,6 +292,8 @@ void getLocalIP(IPAddress* ip)
 {
 	tNetappIpconfigRetArgs config;
 	netapp_ipconfig(&config);
+
+	while(config.aucIP[0]==0){ MAP_SysCtlDelay(10000);
 
 	ip->ip[3] = config.aucIP[0];
 	ip->ip[2] = config.aucIP[1];
