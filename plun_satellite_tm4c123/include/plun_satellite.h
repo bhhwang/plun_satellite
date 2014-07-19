@@ -22,6 +22,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "inth.h"
 
 /*
  * Note : User have to install the TIVAWare(2.1.0.12573) and set the path
@@ -60,16 +61,20 @@
 #ifdef USE_WIFI
 #include "spi.h"
 #include "wlan.h"
-
-#define SSID = "nsynapse";
-#define PASS = "ghkdqudgns";
+#include "evnt_handler.h"
+#include "socket.h"
+#include "hci.h"
+#include "netapp.h"
+#include "security.h"
 #endif
 
 
-
+typedef struct structIPAddress { uint8_t ip[4]; } IPAddress;
 
 
 #ifdef USE_WIFI
+volatile unsigned long isConnectedAP;
+volatile unsigned long ulSmartConfigFinished,ulCC3000DHCP, OkToDoShutDown, ulCC3000DHCP_configured, ulCC3000WasConnected;
 char* sendDriverPatch(unsigned long *Length)
 {
     *Length = 0;
@@ -88,10 +93,40 @@ char* sendWLFWPatch(unsigned long *Length)
     return((char *)0);
 }
 
-
+#define NETAPP_IPCONFIG_MAC_OFFSET				(20)
 void CC3000_AsyncCallback(long lEventType, char *data, unsigned char length)
 {
 
+	if (lEventType == HCI_EVNT_WLAN_ASYNC_SIMPLE_CONFIG_DONE)
+		ulSmartConfigFinished = 1;
+
+	if (lEventType == HCI_EVNT_WLAN_UNSOL_CONNECT)
+		isConnectedAP = 1;
+
+	if (lEventType == HCI_EVNT_WLAN_UNSOL_DISCONNECT)
+	{
+		isConnectedAP = 0;
+		ulCC3000DHCP      = 0;
+		ulCC3000DHCP_configured = 0;
+	}
+
+	if (lEventType == HCI_EVNT_WLAN_UNSOL_DHCP)
+	{
+		// Notes:
+		// 1) IP config parameters are received swapped
+		// 2) IP config parameters are valid only if status is OK, i.e. ulCC3000DHCP becomes 1
+
+		// only if status is OK, the flag is set to 1 and the addresses are valid
+		if ( *(data + NETAPP_IPCONFIG_MAC_OFFSET) == 0)
+			ulCC3000DHCP = 1;
+		else
+			ulCC3000DHCP = 0;
+	}
+
+	if (lEventType == HCI_EVENT_CC3000_CAN_SHUT_DOWN)
+	{
+		OkToDoShutDown = 1;
+	}
 }
 
 long ReadWlanInterruptPin(void){ return MAP_GPIOPinRead(GPIO_PORTB_BASE, GPIO_PIN_2); }
@@ -294,6 +329,9 @@ void wifi_scan()
  * initialize
  */
 void init_wifi();		//initialize WiFi(CC3000 module)
+void init_satellite();	//system initialization
+void init_worker();		//system tick handler for plun worker
+
 void init_satellite()
 {
 	FPUEnable();
@@ -345,11 +383,9 @@ void init_satellite()
 	MAP_GPIODirModeSet(GPIO_PORTB_BASE, GPIO_PIN_5, GPIO_DIR_MODE_OUT);
 	MAP_GPIOPadConfigSet(GPIO_PORTB_BASE, GPIO_PIN_5, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPD);
 
-	MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, LOW);	//disable?
+	MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, LOW);
 
-	SysCtlDelay(600000);
-	SysCtlDelay(600000);
-	SysCtlDelay(600000); //why?
+	//MAP_SysCtlDelay(600000);	//wait for ..
 
 	MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
 	MAP_GPIOPinTypeGPIOOutput(GPIO_PORTE_BASE, GPIO_PIN_0);
@@ -363,28 +399,107 @@ void init_satellite()
 
 	MAP_IntEnable(INT_GPIOB);	//spi
 
-	init_wifi();
 #endif
+
+	init_worker();
+	setState(READY);
 }
 
 void init_wifi()
 {
 	init_spi(1000000, SysCtlClockGet());
 
-	MAP_IntMasterEnable();	//enable processor interrupt
+	//MAP_IntMasterEnable();	//enable processor interrupt
 
 	wlan_init(CC3000_AsyncCallback, sendWLFWPatch, sendDriverPatch, sendBootLoaderPatch,
 				ReadWlanInterruptPin, WlanInterruptEnable, WlanInterruptDisable, WriteWlanPin);
 	wlan_start(0);
+	wlan_ioctl_set_connection_policy(0, 0, 0);	//does not attempt to connect to a previously configuration
 	wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE | HCI_EVNT_WLAN_UNSOL_INIT | HCI_EVNT_WLAN_ASYNC_PING_REPORT);
 
 	//MAP_SysCtlDelay(2000000);
+	init_worker();
+}
+
+void init_worker()
+{
 	SysTickPeriodSet(SysCtlClockGet()/10);	//100ms tick
-	UARTprintf("%d, %d ",SysCtlClockGet(), SysTickValueGet());
 	SysTickIntEnable();
 	SysTickEnable();
-
-	UARTprintf("Done.\n");
 }
+
+/*
+ * for WiFi
+ */
+#include "wlan.h"
+
+void connect_ap(char* ssid, const char* pass)
+{
+	UARTprintf("connecting to AP...\n");
+	init_spi(1000000, SysCtlClockGet());
+	ulCC3000WasConnected = 0;
+
+	wlan_init(CC3000_AsyncCallback, sendWLFWPatch, sendDriverPatch, sendBootLoaderPatch,
+					ReadWlanInterruptPin, WlanInterruptEnable, WlanInterruptDisable, WriteWlanPin);
+	wlan_start(0);
+	wlan_ioctl_set_connection_policy(0, 0, 0);	//does not attempt to connect to a previously configuration
+	wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE | HCI_EVNT_WLAN_UNSOL_INIT | HCI_EVNT_WLAN_ASYNC_PING_REPORT);
+
+	uint32_t aucDHCP = 14400;	uint32_t aucARP = 3600;	uint32_t aucKeepalive = 10;	uint32_t aucInactivity = 0;
+	netapp_timeout_values((unsigned long*)&aucDHCP, (unsigned long*)&aucARP, (unsigned long*)&aucKeepalive, (unsigned long*)&aucInactivity);
+
+	wlan_connect(WLAN_SEC_WPA2, ssid, strlen(ssid), NULL, (unsigned char *)pass, strlen((char *)(pass)));
+
+	while(isConnectedAP==0)	{ MAP_SysCtlDelay(10000); }	//wait until connecting
+
+	setState(DHCP_CONNECTED);
+}
+
+void disconnect_ap(){ wlan_disconnect(); }
+
+void getLocalIP(IPAddress* ip)
+{
+	tNetappIpconfigRetArgs config;
+	netapp_ipconfig(&config);
+
+	ip->ip[3] = config.aucIP[0];
+	ip->ip[2] = config.aucIP[1];
+	ip->ip[1] = config.aucIP[2];
+	ip->ip[0] = config.aucIP[3];
+}
+
+void getSubnetMask(IPAddress* ip)
+{
+	tNetappIpconfigRetArgs config;
+	netapp_ipconfig(&config);
+
+	ip->ip[3] = config.aucSubnetMask[0];
+	ip->ip[2] = config.aucSubnetMask[1];
+	ip->ip[1] = config.aucSubnetMask[2];
+	ip->ip[0] = config.aucSubnetMask[3];
+}
+
+void getGateway(IPAddress* ip)
+{
+	tNetappIpconfigRetArgs config;
+	netapp_ipconfig(&config);
+
+	ip->ip[3] = config.aucDefaultGateway[0];
+	ip->ip[2] = config.aucDefaultGateway[1];
+	ip->ip[1] = config.aucDefaultGateway[2];
+	ip->ip[0] = config.aucDefaultGateway[3];
+}
+
+void getBroadcast(IPAddress* ip)
+{
+	IPAddress DeviceIP; getLocalIP(&DeviceIP);
+	IPAddress SubnetMask; getSubnetMask(&SubnetMask);
+
+	ip->ip[0] = (DeviceIP.ip[0]|~SubnetMask.ip[0]);
+	ip->ip[1] = (DeviceIP.ip[1]|~SubnetMask.ip[1]);
+	ip->ip[2] = (DeviceIP.ip[2]|~SubnetMask.ip[2]);
+	ip->ip[3] = (DeviceIP.ip[3]|~SubnetMask.ip[3]);
+}
+
 
 #endif /* PLUNBASE_H_ */

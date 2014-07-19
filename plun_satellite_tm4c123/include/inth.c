@@ -16,12 +16,11 @@
 #include "driverlib/rom_map.h"
 #include "driverlib/gpio.h"
 #include "inc/hw_memmap.h"
+#include "inth.h"
 
 /*
  * background worker for PLUN like state indicator
  */
-enum state { IDLE=0, READY=1 };
-enum ledcolor {RED=2, BLUE=4, GREEN=8, OFF=0 };
 static uint32_t	state = IDLE;
 
 uint8_t led(uint8_t color) { MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, color); return color; }
@@ -32,16 +31,15 @@ void led_blink(uint8_t color)
 	else prev=led(OFF);
 }
 void setState(uint8_t s){ state = s; }
+
 void PlunWorker(void)
 {
     switch(state)
     {
-    case	IDLE:
-    	led_blink(BLUE);
-    	break;
-    case	READY:
-    	//led_blink(RED);
-    	break;
+    case	IDLE:	break;
+    case	INIT:	led(OFF);	setState(IDLE); break;
+    case	READY:	led_blink(RED);	break;
+    case	DHCP_CONNECTED:	led(RED); break;
     }
 }
 

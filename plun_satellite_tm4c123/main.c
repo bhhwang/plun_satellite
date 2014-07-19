@@ -11,26 +11,29 @@
 
 #include "include/plun_satellite.h"
 
-enum { IDLE=0 };
-static uint8_t cur_state = IDLE;
+char ssid[] = "nsynapse";
+char pass[] = "ghkdqudgns";
 
-void setup()
+IPAddress localip, gateway, subnet, broadcast;
+
+void main(void)
 {
 	init_satellite();
 
-	wifi_scan();
-}
-
-void loop()
-{
-	switch(cur_state)
+	connect_ap(ssid, pass);
+	while(1)
 	{
-	case	IDLE: break;
+		getLocalIP(&localip);
+		getGateway(&gateway);
+		getSubnetMask(&subnet);
+		getBroadcast(&broadcast);
+		if(localip.ip[3]!=0)	break;
 	}
-}
 
-void main(void) {
-	
-	setup();
-	while(1) { loop(); }
+	UARTprintf("\nIP : %d.%d.%d.%d",localip.ip[0],localip.ip[1],localip.ip[2],localip.ip[3]);
+	UARTprintf("\nGateway : %d.%d.%d.%d",gateway.ip[0],gateway.ip[1],gateway.ip[2],gateway.ip[3]);
+	UARTprintf("\nSubnet Mask : %d.%d.%d.%d",subnet.ip[0],subnet.ip[1],subnet.ip[2],subnet.ip[3]);
+	UARTprintf("\nBroadcast : %d.%d.%d.%d",broadcast.ip[0],broadcast.ip[1],broadcast.ip[2],broadcast.ip[3]);
+
+	while(1) {}
 }

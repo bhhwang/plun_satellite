@@ -134,7 +134,7 @@ all: plun_satellite_tm4c123.out
 plun_satellite_tm4c123.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"c:/ti/ccsv6/tools/compiler/arm_5.1.5/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -g --define=_POSIX_SOURCE --define=UART_BUFFERED --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=CC3000_TM4C123_SPI --define=ccs="ccs" --display_error_number --diag_warning=225 --diag_wrap=off -z -m"plun_satellite_tm4c123.map" --heap_size=0 --stack_size=16384 -i"c:/ti/ccsv6/tools/compiler/arm_5.1.5/lib" -i"c:/ti/ccsv6/tools/compiler/arm_5.1.5/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="plun_satellite_tm4c123_linkInfo.xml" --rom_model -o "plun_satellite_tm4c123.out" $(ORDERED_OBJS)
+	"c:/ti/ccsv6/tools/compiler/arm_5.1.5/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -Ooff -g --define=_POSIX_SOURCE --define=UART_BUFFERED --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=CC3000_TM4C123_SPI --define=ccs="ccs" --display_error_number --diag_warning=225 --diag_wrap=off -z -m"plun_satellite_tm4c123.map" --heap_size=0 --stack_size=512 -i"c:/ti/ccsv6/tools/compiler/arm_5.1.5/lib" -i"c:/ti/ccsv6/tools/compiler/arm_5.1.5/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="plun_satellite_tm4c123_linkInfo.xml" --rom_model -o "plun_satellite_tm4c123.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
