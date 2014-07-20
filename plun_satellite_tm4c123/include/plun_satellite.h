@@ -68,7 +68,6 @@
 #include "security.h"
 #endif
 
-
 typedef struct structIPAddress { uint8_t ip[4]; } IPAddress;
 
 
@@ -123,7 +122,7 @@ void CC3000_AsyncCallback(long lEventType, char *data, unsigned char length)
 }
 
 long ReadWlanInterruptPin(void){ return MAP_GPIOPinRead(GPIO_PORTB_BASE, GPIO_PIN_2); }
-void WlanInterruptEnable(){ MAP_GPIOIntEnab hle(GPIO_PORTB_BASE, GPIO_PIN_2); }
+void WlanInterruptEnable(){ MAP_GPIOIntEnable(GPIO_PORTB_BASE, GPIO_PIN_2); }
 void WlanInterruptDisable(){ MAP_GPIOIntDisable(GPIO_PORTB_BASE, GPIO_PIN_2); }
 void WriteWlanPin( unsigned char val ){ val?MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, HIGH):MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, LOW); }
 
@@ -263,7 +262,7 @@ void init_worker()
 /*
  * for WiFi
  */
-#include "wlan.h"
+/*#include "wlan.h"
 
 void connect_ap(char* ssid, const char* pass)
 {
@@ -286,14 +285,15 @@ void connect_ap(char* ssid, const char* pass)
 	setState(DHCP_CONNECTED);
 }
 
-void disconnect_ap(){ wlan_disconnect(); }
+void disconnect_ap(){ wlan_disconnect(); }*/
 
-void getLocalIP(IPAddress* ip)
+
+/*void getLocalIP(IPAddress* ip)
 {
 	tNetappIpconfigRetArgs config;
 	netapp_ipconfig(&config);
 
-	while(config.aucIP[0]==0){ MAP_SysCtlDelay(10000);
+	while(config.aucIP[0]==0){ MAP_SysCtlDelay(10000); }
 
 	ip->ip[3] = config.aucIP[0];
 	ip->ip[2] = config.aucIP[1];
@@ -332,7 +332,7 @@ void getBroadcast(IPAddress* ip)
 	ip->ip[1] = (DeviceIP.ip[1]|~SubnetMask.ip[1]);
 	ip->ip[2] = (DeviceIP.ip[2]|~SubnetMask.ip[2]);
 	ip->ip[3] = (DeviceIP.ip[3]|~SubnetMask.ip[3]);
-}
+}*/
 
 
 #endif /* PLUNBASE_H_ */

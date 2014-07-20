@@ -9,12 +9,12 @@
  * 		  We hope to re-configure all code for fast implementation, but all functions will not support.
  */
 
-#include "include/plun_satellite.h"
+#include "include/plun.h"
 
 char ssid[] = "nsynapse";
 char pass[] = "ghkdqudgns";
 
-IPAddress localip, gateway, subnet, broadcast;
+IPAddress locali, gateway, subnet, broadcast;
 
 void main(void)
 {

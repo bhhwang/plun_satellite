@@ -94,7 +94,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="include/wifi.c|cc3000|tm4c123gh6pm_startup_ccs_gcc.c|tm4c123gh6pm.lds" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="cc3000|tm4c123gh6pm_startup_ccs_gcc.c|tm4c123gh6pm.lds" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
