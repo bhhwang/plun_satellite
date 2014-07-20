@@ -1,14 +1,13 @@
 # FIXED
 
 main.obj: ../main.c
-main.obj: ../include/plun_satellite.h
+main.obj: ../include/plun.h
 main.obj: c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/stdint.h
 main.obj: c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/stdbool.h
 main.obj: c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/yvals.h
 main.obj: c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/stdarg.h
 main.obj: c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/linkage.h
 main.obj: c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/_lock.h
-main.obj: ../include/inth.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/sysctl.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/rom.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/rom_map.h
@@ -40,16 +39,16 @@ main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/netapp.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/security.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/nvmem.h
+main.obj: ../include/inth.h
 
 ../main.c: 
-../include/plun_satellite.h: 
+../include/plun.h: 
 c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/stdint.h: 
 c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/stdbool.h: 
 c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/yvals.h: 
 c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/stdarg.h: 
 c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/linkage.h: 
 c:/ti/ccsv6/tools/compiler/arm_5.1.5/include/_lock.h: 
-../include/inth.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/sysctl.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/rom.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/driverlib/rom_map.h: 
@@ -81,3 +80,4 @@ C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/socket.h:
 C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/netapp.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/security.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/nvmem.h: 
+../include/inth.h: 

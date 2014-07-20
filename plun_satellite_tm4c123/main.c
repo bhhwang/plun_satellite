@@ -14,26 +14,25 @@
 char ssid[] = "nsynapse";
 char pass[] = "ghkdqudgns";
 
-IPAddress locali, gateway, subnet, broadcast;
+IPAddress local, gateway, subnet, broadcast;
 
 void main(void)
 {
 	init_satellite();
 
+	UARTprintf("PLUN Satellite\n");
 	connect_ap(ssid, pass);
-	while(1)
-	{
-		getLocalIP(&localip);
-		getGateway(&gateway);
-		getSubnetMask(&subnet);
-		getBroadcast(&broadcast);
-		if(localip.ip[3]!=0)	break;
-	}
 
-	UARTprintf("\nIP : %d.%d.%d.%d",localip.ip[0],localip.ip[1],localip.ip[2],localip.ip[3]);
-	UARTprintf("\nGateway : %d.%d.%d.%d",gateway.ip[0],gateway.ip[1],gateway.ip[2],gateway.ip[3]);
-	UARTprintf("\nSubnet Mask : %d.%d.%d.%d",subnet.ip[0],subnet.ip[1],subnet.ip[2],subnet.ip[3]);
-	UARTprintf("\nBroadcast : %d.%d.%d.%d",broadcast.ip[0],broadcast.ip[1],broadcast.ip[2],broadcast.ip[3]);
+	while(!(_isConnectedAP() && _isDHCPConfigured()))
+		MAP_SysCtlDelay(1000000);
 
-	while(1) {}
+	getAddress(&local, &gateway, &subnet, &broadcast);
+
+	UARTprintf("Local IP : %d.%d.%d.%d\n",local[3],local[2],local[1],local[0]);
+	UARTprintf("Gateway IP : %d.%d.%d.%d\n",gateway[3],gateway[2],gateway[1],gateway[0]);
+	UARTprintf("Subnet IP : %d.%d.%d.%d\n",subnet[3],subnet[2],subnet[1],subnet[0]);
+	UARTprintf("Broadcast IP : %d.%d.%d.%d\n",broadcast[3],broadcast[2],broadcast[1],broadcast[0]);
+
+	while(1) { MAP_SysCtlDelay(1000); };
+
 }

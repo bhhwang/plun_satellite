@@ -41,56 +41,53 @@
 #define UART_PORT	0
 #define UART_BAUDRATE	115200
 
-typedef unsigned char	IPAddress[4];
-volatile unsigned long isConnectedAP;
+typedef uint8_t	IPAddress[4];
 
-void connect_ap(char* ssid, const char* pass)
-{
-	init_spi(1000000, SysCtlClockGet());	//1MHz SPI
-	wlan_init(CC3000_AsyncCallback, sendWLFWPatch, sendDriverPatch, sendBootLoaderPatch,
-					ReadWlanInterruptPin, WlanInterruptEnable, WlanInterruptDisable, WriteWlanPin);
-	wlan_start(0);
-	wlan_ioctl_set_connection_policy(0, 0, 0);	//does not attempt to connect to a previously configuration
-	wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE | HCI_EVNT_WLAN_UNSOL_INIT | HCI_EVNT_WLAN_ASYNC_PING_REPORT);
+/*
+ * satellite initialization
+ */
+extern void init_satellite();
 
-	uint32_t aucDHCP = 14400;	uint32_t aucARP = 3600;	uint32_t aucKeepalive = 10;	uint32_t aucInactivity = 0;
-	netapp_timeout_values((unsigned long*)&aucDHCP, (unsigned long*)&aucARP, (unsigned long*)&aucKeepalive, (unsigned long*)&aucInactivity);
+/*
+ * connect to access point (secure)
+ */
+extern void connect_ap(char* ssid, const char* pass);
 
-	wlan_connect(WLAN_SEC_WPA2, ssid, strlen(ssid), NULL, (unsigned char *)pass, strlen((char *)(pass)));
+/*
+ * disconnect access point
+ */
+extern void disconnect_ap();
 
-	while(isConnectedAP==0)	{ MAP_SysCtlDelay(10000); }	//wait until connecting
+/*
+ * getting IP Address
+ * Note : you can read address backward. (ex) local[4]= {1,0,168,192}
+ */
+extern void getAddress(IPAddress* local, IPAddress* subnet, IPAddress* gateway, IPAddress* bc);
 
-	setState(DHCP_CONNECTED);
-}
+/*
+ * for Wifi interrupt handler and so on..
+ */
+extern void CC3000_AsyncCallback(long lEventType, char *data, unsigned char length);
+extern char* sendDriverPatch(unsigned long *Length);
+extern char* sendBootLoaderPatch(unsigned long *Length);
+extern char* sendWLFWPatch(unsigned long *Length);
+extern long ReadWlanInterruptPin(void);
+extern void WlanInterruptEnable();
+extern void WlanInterruptDisable();
+extern void WriteWlanPin(unsigned char val);
 
-void disconnect_ap(){ wlan_disconnect(); }
-void getAddress(IPAddress* local, IPAddress* subnet, IPAddress* gateway, IPAddress* bc)
-{
-	tNetappIpconfigRetArgs config;
-	netapp_ipconfig(&config);
 
-	while(config.aucIP[0]==0){ MAP_SysCtlDelay(10000); }
+/*
+ * 1 if system got dynamic IP address from HDCP
+ */
+extern unsigned long _isDHCPConfigured();
 
-	local[0] = config.aucIP[3];	//local ip address from dhcp
-	local[1] = config.aucIP[2];
-	local[2] = config.aucIP[1];
-	local[3] = config.aucIP[0];
+/*
+ * 1 if system is connected to access point
+ */
+extern unsigned long _isConnectedAP();
 
-	subnet[0] = config.aucSubnetMask[3];	//subnet mask
-	subnet[1] = config.aucSubnetMask[2];
-	subnet[2] = config.aucSubnetMask[1];
-	subnet[3] = config.aucSubnetMask[0];
 
-	gateway[0] = config.aucDefaultGateway[3];	//gateway address
-	gateway[1] = config.aucDefaultGateway[2];
-	gateway[2] = config.aucDefaultGateway[1];
-	gateway[3] = config.aucDefaultGateway[0];
-
-	bc[0] = (local[0]|~subnet[0]);	//broadcast
-	bc[1] = (local[1]|~subnet[1]);
-	bc[2] = (local[2]|~subnet[2]);
-	bc[3] = (local[3]|~subnet[3]);
-}
 
 
 
