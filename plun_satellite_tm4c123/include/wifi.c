@@ -3,6 +3,7 @@
 #define WIFI_C_
 
 #include "plun.h"
+#include "socket.h"
 
 #define NETAPP_IPCONFIG_MAC_OFFSET	20
 volatile unsigned long isConnectedAP;
@@ -103,6 +104,8 @@ long ReadWlanInterruptPin(void){ return MAP_GPIOPinRead(GPIO_PORTB_BASE, GPIO_PI
 void WlanInterruptEnable(){ MAP_GPIOIntEnable(GPIO_PORTB_BASE, GPIO_PIN_2); }
 void WlanInterruptDisable(){ MAP_GPIOIntDisable(GPIO_PORTB_BASE, GPIO_PIN_2); }
 void WriteWlanPin( unsigned char val ){ val?MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, SIGNAL_HIGH):MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, SIGNAL_LOW); }
+
+
 
 
 #endif

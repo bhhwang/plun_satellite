@@ -13,6 +13,7 @@
 
 char ssid[] = "nsynapse";
 char pass[] = "ghkdqudgns";
+char devicename[] = "testdevice";
 
 IPAddress local, gateway, subnet, broadcast;
 
@@ -32,6 +33,36 @@ void main(void)
 	UARTprintf("Gateway IP : %d.%d.%d.%d\n",gateway[3],gateway[2],gateway[1],gateway[0]);
 	UARTprintf("Subnet IP : %d.%d.%d.%d\n",subnet[3],subnet[2],subnet[1],subnet[0]);
 	UARTprintf("Broadcast IP : %d.%d.%d.%d\n",broadcast[3],broadcast[2],broadcast[1],broadcast[0]);
+
+	UARTprintf("Connect to MQTT Server..\n");
+
+	bool mqttConnected = mqtt_connect((const char*)devicename, );
+
+	mqtt_connect(const char* id, IPAddress ip, unsigned int port)
+
+	int32_t _sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);	//IPPROTO_TCP
+
+	sockaddr _socketAddr;
+	_socketAddr.sa_family = AF_INET;
+	uint32_t port = 6000;
+	_socketAddr.sa_data[0] = (port & 0xFF00) >> 8;
+	_socketAddr.sa_data[1] = (port & 0x00FF) >> 0;
+	_socketAddr.sa_data[2] = 192;
+	_socketAddr.sa_data[3] = 168;
+	_socketAddr.sa_data[4] = 0;
+	_socketAddr.sa_data[5] = 255;
+
+	/*char data[] = "test";
+
+	UARTprintf("Sending UDP Packet...\n");
+	while(1)
+	{
+		sendto(_sock, data, 4, 0, &_socketAddr, sizeof(sockaddr));
+		MAP_SysCtlDelay(1000000);
+	}
+
+	closesocket(_sock);*/
+
 
 	while(1) { MAP_SysCtlDelay(1000); };
 

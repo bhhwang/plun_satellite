@@ -35,6 +35,7 @@
 #include "hci.h"
 #include "netapp.h"
 #include "security.h"
+#include "socket.h"
 
 
 #define UART_PORT	0
