@@ -39,7 +39,6 @@ main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/netapp.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/security.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/nvmem.h
-main.obj: ../include/inth.h
 
 ../main.c: 
 ../include/plun.h: 
@@ -80,4 +79,3 @@ C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/socket.h:
 C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/netapp.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/security.h: 
 C:/ti/TivaWare_C_Series-2.1.0.12573/cc3000/src/host_driver/core_driver/nvmem.h: 
-../include/inth.h: 

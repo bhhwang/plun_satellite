@@ -10,13 +10,15 @@
 #ifndef INTH_C_
 #define INTH_C_
 
-#include <stdint.h>
+/*#include <stdint.h>
 #include <stdbool.h>
 #include "driverlib/pin_map.h"
 #include "driverlib/rom_map.h"
 #include "driverlib/gpio.h"
 #include "inc/hw_memmap.h"
-#include "inth.h"
+#include "inth.h"*/
+
+#include "plun.h"
 
 /*
  * background worker for PLUN like state indicator

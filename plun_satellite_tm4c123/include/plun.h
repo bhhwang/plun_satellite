@@ -36,10 +36,12 @@
 #include "netapp.h"
 #include "security.h"
 
-#include "inth.h"
 
 #define UART_PORT	0
 #define UART_BAUDRATE	115200
+
+enum state { IDLE=0, INIT=1, READY=2, DHCP_CONNECTED=3, PLUN_CONNECTED=4};
+enum ledcolor {RED=2, BLUE=4, GREEN=8, OFF=0 };
 
 typedef uint8_t	IPAddress[4];
 
@@ -87,10 +89,26 @@ extern unsigned long _isDHCPConfigured();
  */
 extern unsigned long _isConnectedAP();
 
+/*
+ * led indicator (red, green, blue)
+ */
+extern uint8_t led(uint8_t color);
+
+/*
+ * system state (refresh every time tick)
+ */
+void setState(uint8_t s);
 
 
+/*
+ * MQTT connect
+ */
+extern bool mqtt_connect(const char* id, IPAddress ip, unsigned int port);
 
-
+/*
+ * MQTT publish
+ */
+extern bool mqtt_publish(const char* topic, const char* message);
 
 
 

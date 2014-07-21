@@ -9,7 +9,7 @@ CG_TOOL_ROOT := c:/ti/ccsv6/tools/compiler/arm_5.1.5
 ORDERED_OBJS += \
 $(GEN_CMDS__FLAG) \
 "./include/wifi.obj" \
-"./include/uart.obj" \
+"./include/matt_pub.obj" \
 "./include/inth.obj" \
 "./include/base.obj" \
 "./uartstdio.obj" \
@@ -150,8 +150,8 @@ plun_satellite_tm4c123.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "cc3000lib.pp" "main.pp" "tm4c123gh6pm_startup_ccs.pp" "uartstdio.pp" "include\base.pp" "include\inth.pp" "include\uart.pp" "include\wifi.pp" 
-	-$(RM) "cc3000lib.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" "include\base.obj" "include\inth.obj" "include\uart.obj" "include\wifi.obj" 
+	-$(RM) "cc3000lib.pp" "main.pp" "tm4c123gh6pm_startup_ccs.pp" "uartstdio.pp" "include\base.pp" "include\inth.pp" "include\matt_pub.pp" "include\wifi.pp" 
+	-$(RM) "cc3000lib.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" "include\base.obj" "include\inth.obj" "include\matt_pub.obj" "include\wifi.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
