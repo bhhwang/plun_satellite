@@ -27,3 +27,16 @@ Open source platform을 기반으로 plun software와 연동되어 사물인터�
 
 
 * ARM mbed
+
+Getting Started
+===============
+1. Download CCS, TivaWare and Drivers which depends on your device.
+2. on the CCS Menu, Help > Eclipse Marketplace > Find 'Egit' > Install
+3. on the 'Project Explorer' of CCS, click right button then select import > import > Git > Project from Git
+4. Enter the this repository URL(https://github.com/bhhwang/plun_satellite) on window for git clone.
+5. You can freely use this source code under the MIT License.
+
+
+License
+===============
+You can freely use, modify, redistribute this source code under the MIT License.
