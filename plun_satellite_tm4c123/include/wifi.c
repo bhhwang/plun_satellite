@@ -9,9 +9,16 @@
 volatile unsigned long isConnectedAP;
 volatile unsigned long ulSmartConfigFinished,ulCC3000DHCP, OkToDoShutDown, ulCC3000DHCP_configured, ulCC3000WasConnected;
 
+/*
+ * defined functions
+ */
 unsigned long _isDHCPConfigured() { return ulCC3000DHCP; }
 unsigned long _isConnectedAP() { return isConnectedAP; }
+bool connect_plun_host();
 
+/*
+ * function impl.
+ */
 void connect_ap(char* ssid, const char* pass)
 {
 	init_spi(1000000, SysCtlClockGet());	//1MHz SPI

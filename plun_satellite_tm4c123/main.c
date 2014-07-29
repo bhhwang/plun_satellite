@@ -36,13 +36,13 @@ void main(void)
 
 	UARTprintf("Connect to MQTT Server..\n");
 
-	bool mqttConnected = mqtt_connect((const char*)devicename, );
+	/*bool mqttConnected = mqtt_connect((const char*)devicename, );
 
 	mqtt_connect(const char* id, IPAddress ip, unsigned int port)
 
 	int32_t _sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);	//IPPROTO_TCP
 
-	sockaddr _socketAddr;
+	sockaddr_in _socketAddr;
 	_socketAddr.sa_family = AF_INET;
 	uint32_t port = 6000;
 	_socketAddr.sa_data[0] = (port & 0xFF00) >> 8;
@@ -50,7 +50,7 @@ void main(void)
 	_socketAddr.sa_data[2] = 192;
 	_socketAddr.sa_data[3] = 168;
 	_socketAddr.sa_data[4] = 0;
-	_socketAddr.sa_data[5] = 255;
+	_socketAddr.sa_data[5] = 255;*/
 
 	/*char data[] = "test";
 
