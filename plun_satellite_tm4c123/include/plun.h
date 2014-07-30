@@ -8,9 +8,6 @@
 #ifndef PLUN_H_
 #define PLUN_H_
 
-#define SIGNAL_HIGH	0xff
-#define SIGNAL_LOW	0x00
-
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -37,11 +34,18 @@
 #include "security.h"
 #include "socket.h"
 
+#define SIGNAL_HIGH	0xff
+#define SIGNAL_LOW	0x00
 
 #define UART_PORT	0
 #define UART_BAUDRATE	115200
 
-enum state { IDLE=0, INIT=1, READY=2, DHCP_CONNECTED=3, PLUN_CONNECTED=4};
+enum state {
+	IDLE = 0,	//nothing to do.
+	INIT = 1,	//initial state
+	READY = 2, 	//wait for any input signal
+	DHCP_CONNECTED = 3,
+	PLUN_HOST_CONNECTED = 4};
 enum ledcolor {RED=2, BLUE=4, GREEN=8, OFF=0 };
 
 typedef uint8_t	IPAddress[4];
