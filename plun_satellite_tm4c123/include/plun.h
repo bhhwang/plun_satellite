@@ -43,9 +43,10 @@
 enum state {
 	IDLE = 0,	//nothing to do.
 	INIT = 1,	//initial state
-	READY = 2, 	//wait for any input signal
-	DHCP_CONNECTED = 3,
-	PLUN_HOST_CONNECTED = 4};
+	READY = 2, 	//after initialized, waiting for any input signal
+	AP_CONNECTED = 3,	//getting ip address & trying to connect plun host
+	HOST_CONNECTED = 4	//connected to host
+};
 enum ledcolor {RED=2, BLUE=4, GREEN=8, OFF=0 };
 
 typedef uint8_t	IPAddress[4];
@@ -53,21 +54,13 @@ typedef uint8_t	IPAddress[4];
 /*
  * satellite initialization
  */
-extern void init_satellite();
-
-/*
- * connect to access point (secure)
- */
+extern void init_satellite_tm4c();
 extern void connect_ap(char* ssid, const char* pass);
-
-/*
- * disconnect access point
- */
 extern void disconnect_ap();
 
 /*
  * getting IP Address
- * Note : you can read address backward. (ex) local[4]= {1,0,168,192}
+ * Note : you should read address backward. (ex) local[4]= {1,0,168,192}
  */
 extern void getAddress(IPAddress* local, IPAddress* subnet, IPAddress* gateway, IPAddress* bc);
 
@@ -87,32 +80,18 @@ extern void WriteWlanPin(unsigned char val);
 /*
  * 1 if system got dynamic IP address from HDCP
  */
-extern unsigned long _isDHCPConfigured();
+extern unsigned long is_dhcp_configured();
+extern unsigned long is_connected_ap();
 
-/*
- * 1 if system is connected to access point
- */
-extern unsigned long _isConnectedAP();
-
-/*
- * led indicator (red, green, blue)
- */
 extern uint8_t led(uint8_t color);
 
-/*
- * system state (refresh every time tick)
- */
 void setState(uint8_t s);
 
 
 /*
- * MQTT connect
+ * mqtt functions
  */
 extern bool mqtt_connect(const char* id, IPAddress ip, unsigned int port);
-
-/*
- * MQTT publish
- */
 extern bool mqtt_publish(const char* topic, const char* message);
 
 

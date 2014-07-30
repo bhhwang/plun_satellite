@@ -40,10 +40,6 @@ bool mqtt_connect(const char* id, IPAddress ip, unsigned int port)
 	return true;
 }
 
-bool mqtt_disconnect()
-{
-
-}
 
 
 bool mqtt_publish(const char* topic, const char* message)

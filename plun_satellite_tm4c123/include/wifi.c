@@ -6,14 +6,15 @@
 #include "socket.h"
 
 #define NETAPP_IPCONFIG_MAC_OFFSET	20
-volatile unsigned long isConnectedAP;
-volatile unsigned long ulSmartConfigFinished,ulCC3000DHCP, OkToDoShutDown, ulCC3000DHCP_configured, ulCC3000WasConnected;
+
+volatile unsigned long connected_ap;
+volatile unsigned long ulSmartConfigFinished,cc3000_dhcp, OkToDoShutDown, ulCC3000WasConnected;
 
 /*
  * defined functions
  */
-unsigned long _isDHCPConfigured() { return ulCC3000DHCP; }
-unsigned long _isConnectedAP() { return isConnectedAP; }
+unsigned long is_dhcp_configured() { return cc3000_dhcp; }
+unsigned long is_connected_ap() { return connected_ap; }
 bool connect_plun_host();
 
 /*
@@ -33,9 +34,9 @@ void connect_ap(char* ssid, const char* pass)
 
 	wlan_connect(WLAN_SEC_WPA2, ssid, strlen(ssid), NULL, (unsigned char *)pass, strlen((char *)(pass)));
 
-	while(isConnectedAP==0)	{ MAP_SysCtlDelay(10000); }	//wait until connecting
+	while(connected_ap==0)	{ MAP_SysCtlDelay(10000); }	//wait until connecting
 
-	setState(DHCP_CONNECTED);
+	setState(AP_CONNECTED);
 }
 
 void disconnect_ap()
@@ -86,21 +87,20 @@ void CC3000_AsyncCallback(long lEventType, char *data, unsigned char length)
 		ulSmartConfigFinished = 1;
 
 	if (lEventType == HCI_EVNT_WLAN_UNSOL_CONNECT)
-		isConnectedAP = 1;
+		connected_ap = 1;
 
 	if (lEventType == HCI_EVNT_WLAN_UNSOL_DISCONNECT)
 	{
-		isConnectedAP = 0;
-		ulCC3000DHCP = 0;
-		ulCC3000DHCP_configured = 0;
+		connected_ap = 0;
+		cc3000_dhcp = 0;
 	}
 
 	if (lEventType == HCI_EVNT_WLAN_UNSOL_DHCP)
 	{
 		if ( *(data + NETAPP_IPCONFIG_MAC_OFFSET) == 0)
-			ulCC3000DHCP = 1;
+			cc3000_dhcp = 1;
 		else
-			ulCC3000DHCP = 0;
+			cc3000_dhcp = 0;
 	}
 
 	if (lEventType == HCI_EVENT_CC3000_CAN_SHUT_DOWN)

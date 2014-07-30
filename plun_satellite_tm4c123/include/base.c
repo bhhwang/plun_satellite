@@ -19,7 +19,10 @@ void init_worker()
 	SysTickEnable();
 }
 
-void init_satellite()
+/*
+ * initialize tm4c
+ */
+void init_satellite_tm4c()
 {
 	FPUEnable();
 	FPULazyStackingEnable();

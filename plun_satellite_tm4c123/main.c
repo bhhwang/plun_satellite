@@ -19,14 +19,17 @@ IPAddress local, gateway, subnet, broadcast;
 
 void main(void)
 {
-	init_satellite();
+	//1. initialize board
+	init_satellite_tm4c();
 
-	UARTprintf("PLUN Satellite\n");
+	//2. connect access point with ssid, password
 	connect_ap(ssid, pass);
 
-	while(!(_isConnectedAP() && _isDHCPConfigured()))
+	//3.wait for connecting to ap and dhcp configured
+	while(!(is_connected_ap() && is_dhcp_configured()))
 		MAP_SysCtlDelay(1000000);
 
+	//4. after connected, get ip address
 	getAddress(&local, &gateway, &subnet, &broadcast);
 
 	UARTprintf("Local IP : %d.%d.%d.%d\n",local[3],local[2],local[1],local[0]);
