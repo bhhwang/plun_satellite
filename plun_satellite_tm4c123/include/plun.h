@@ -54,7 +54,7 @@ typedef uint8_t	IPAddress[4];
 /*
  * satellite initialization
  */
-extern void init_satellite_tm4c();
+extern void init_satellite();
 extern void connect_ap(char* ssid, const char* pass);
 extern void disconnect_ap();
 
@@ -62,7 +62,7 @@ extern void disconnect_ap();
  * getting IP Address
  * Note : you should read address backward. (ex) local[4]= {1,0,168,192}
  */
-extern void getAddress(IPAddress* local, IPAddress* subnet, IPAddress* gateway, IPAddress* bc);
+extern void getAddress(IPAddress* local, IPAddress* subnet, IPAddress* gateway);
 
 /*
  * for Wifi interrupt handler and so on..
@@ -93,6 +93,13 @@ void setState(uint8_t s);
  */
 extern bool mqtt_connect(const char* id, IPAddress ip, unsigned int port);
 extern bool mqtt_publish(const char* topic, const char* message);
+
+/*
+ * for plun system
+ */
+
+extern void plun_get_host(long* sock, IPAddress* hostaddr);
+extern bool IPAddressDecoder(char* strIPAddress, IPAddress* ipaddr);
 
 
 

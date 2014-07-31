@@ -22,7 +22,7 @@ void init_worker()
 /*
  * initialize tm4c
  */
-void init_satellite_tm4c()
+void init_satellite()
 {
 	FPUEnable();
 	FPULazyStackingEnable();
@@ -78,7 +78,7 @@ void init_satellite_tm4c()
 
 	MAP_GPIOIntEnable(GPIO_PORTB_BASE, GPIO_PIN_2);	//enable interrupt for WLAN_IRQ pin
 
-	SpiCleanGPIOISR();	//clear inerrupt status
+	SpiCleanGPIOISR();	//clear interrupt status
 
 	MAP_IntEnable(INT_GPIOB);	//spi
 

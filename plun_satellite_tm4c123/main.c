@@ -13,31 +13,39 @@
 
 char ssid[] = "nsynapse";
 char pass[] = "ghkdqudgns";
-char devicename[] = "testdevice";
 
-IPAddress local, gateway, subnet, broadcast;
+
+IPAddress local, gateway, subnet, host;
 
 void main(void)
 {
-	//1. initialize board
-	init_satellite_tm4c();
+	//1. initialize board(clock & i/o setup)
+	init_satellite();
+
+	//UARTprintf("Board Initialized\n");
 
 	//2. connect access point with ssid, password
 	connect_ap(ssid, pass);
+	//UARTprintf("Connected AP\n");
 
 	//3.wait for connecting to ap and dhcp configured
 	while(!(is_connected_ap() && is_dhcp_configured()))
 		MAP_SysCtlDelay(1000000);
 
 	//4. after connected, get ip address
-	getAddress(&local, &gateway, &subnet, &broadcast);
+	getAddress(&local, &gateway, &subnet);
 
-	UARTprintf("Local IP : %d.%d.%d.%d\n",local[3],local[2],local[1],local[0]);
-	UARTprintf("Gateway IP : %d.%d.%d.%d\n",gateway[3],gateway[2],gateway[1],gateway[0]);
-	UARTprintf("Subnet IP : %d.%d.%d.%d\n",subnet[3],subnet[2],subnet[1],subnet[0]);
-	UARTprintf("Broadcast IP : %d.%d.%d.%d\n",broadcast[3],broadcast[2],broadcast[1],broadcast[0]);
+	//UARTprintf("Local IP : %d.%d.%d.%d\n",local[3],local[2],local[1],local[0]);
+	//UARTprintf("Gateway IP : %d.%d.%d.%d\n",gateway[3],gateway[2],gateway[1],gateway[0]);
+	//UARTprintf("Subnet IP : %d.%d.%d.%d\n",subnet[3],subnet[2],subnet[1],subnet[0]);
 
-	UARTprintf("Connect to MQTT Server..\n");
+	long sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+	//5. getting host ip
+	plun_get_host(&sock, &host);
+
+	//UARTprintf("* Host IP : %d.%d.%d.%d\n",host[3],host[2],host[1],host[0]);
+
 
 	/*bool mqttConnected = mqtt_connect((const char*)devicename, );
 

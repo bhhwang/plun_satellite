@@ -3,7 +3,7 @@
 #define WIFI_C_
 
 #include "plun.h"
-#include "socket.h"
+//#include "socket.h"
 
 #define NETAPP_IPCONFIG_MAC_OFFSET	20
 
@@ -44,7 +44,7 @@ void disconnect_ap()
 	wlan_disconnect();
 }
 
-void getAddress(IPAddress* local, IPAddress* subnet, IPAddress* gateway, IPAddress* bc)
+void getAddress(IPAddress* local, IPAddress* subnet, IPAddress* gateway)
 {
 	tNetappIpconfigRetArgs config;
 	netapp_ipconfig(&config);
@@ -53,13 +53,13 @@ void getAddress(IPAddress* local, IPAddress* subnet, IPAddress* gateway, IPAddre
 	memcpy(subnet, config.aucSubnetMask, sizeof(config.aucSubnetMask));
 	memcpy(gateway, config.aucIP, sizeof(config.aucDefaultGateway));
 
-	unsigned char _bc[4];
+	/*unsigned char _bc[4];
 	_bc[3] = config.aucIP[3]|~config.aucSubnetMask[3];
 	_bc[2] = config.aucIP[2]|~config.aucSubnetMask[2];
 	_bc[1] = config.aucIP[1]|~config.aucSubnetMask[1];
 	_bc[0] = config.aucIP[0]|~config.aucSubnetMask[0];
 
-	memcpy(bc, _bc, sizeof(_bc));
+	memcpy(bc, _bc, sizeof(_bc));*/
 }
 
 char* sendDriverPatch(unsigned long *Length)
@@ -111,8 +111,6 @@ long ReadWlanInterruptPin(void){ return MAP_GPIOPinRead(GPIO_PORTB_BASE, GPIO_PI
 void WlanInterruptEnable(){ MAP_GPIOIntEnable(GPIO_PORTB_BASE, GPIO_PIN_2); }
 void WlanInterruptDisable(){ MAP_GPIOIntDisable(GPIO_PORTB_BASE, GPIO_PIN_2); }
 void WriteWlanPin( unsigned char val ){ val?MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, SIGNAL_HIGH):MAP_GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, SIGNAL_LOW); }
-
-
 
 
 #endif
